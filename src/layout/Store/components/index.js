@@ -1,0 +1,1 @@
+export {StoreHeader} from './Header/StoreHeader.component';
