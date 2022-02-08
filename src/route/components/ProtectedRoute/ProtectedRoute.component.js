@@ -1,4 +1,3 @@
-import {Component} from 'react';
 import {Navigate} from 'react-router-dom';
 import {PATHS} from 'config/routes.config';
 import {PanelLayout} from 'layout';
@@ -6,7 +5,7 @@ import {DEFAULT_PROPS, PROP_TYPES} from './ProtectedRoute.config';
 
 const TargetPage = ({Component, hasLayout}) => {
 
-  const isLoggedIn = true;
+  const isLoggedIn = false;
 
   if (isLoggedIn) {
     return <Navigate replace to={PATHS.HOME} />

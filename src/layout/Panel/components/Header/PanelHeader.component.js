@@ -1,5 +1,5 @@
 import * as React from 'react';
-import style from './PanelHeader.module.css';
+import style from './PanelHeader.module.scss';
 import {Link} from "react-router-dom";
 
 function PanelHeader(props) {

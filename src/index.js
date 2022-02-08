@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {App} from './App';
-import 'asset/styles/style.css';
+import {RTL} from './App';
+import 'asset/styles/style.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RTL />
   </React.StrictMode>,
   document.getElementById('root')
 );
