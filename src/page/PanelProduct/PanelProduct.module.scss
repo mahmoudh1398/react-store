@@ -1,0 +1,96 @@
+.wrapper {
+  padding: 51px 20px;
+}
+
+.main_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  button {
+    all: unset;
+    background-color: #4CAF50;
+    border-radius: 3px;
+    color: #FFFAFA;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+
+    &:hover {
+      background-color: #81C784;
+    }
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: right;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #E0F7FA;
+}
+
+tr:nth-child(1) {
+  background-color: #B2EBF2;
+  th {
+    text-align: center;
+  }
+}
+
+th:nth-child(1), td:nth-child(1) {
+  width: 20%;
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 35%;
+}
+
+th:nth-child(3), td:nth-child(3){
+  width: 35%;
+}
+
+th:nth-child(4), td:nth-child(4) {
+  width: 10%;
+}
+
+tr td:nth-child(4) {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  width: 100%;
+}
+
+table {
+  button {
+    all: unset;
+    color: #FFFAFA;
+    cursor: pointer;
+    width: 50px;
+  }
+
+  button:nth-child(1) {
+    background-color: #FFB74D;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  button:nth-child(2) {
+    background-color: #EF5350;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+}
+
