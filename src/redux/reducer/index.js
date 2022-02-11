@@ -1,6 +1,11 @@
 import { combineReducers } from "redux";
-import GeneralReducer from "./general.reducer";
+import { productReducer } from "./productReducer";
+import {orderReducer} from './orderReducer'
 
-export default combineReducers({
-  general: GeneralReducer
+
+const reducers = combineReducers({
+  allProducts: productReducer,
+  allOrders: orderReducer,
 });
+
+export {reducers}

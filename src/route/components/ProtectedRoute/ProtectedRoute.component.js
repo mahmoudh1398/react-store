@@ -4,11 +4,11 @@ import {PanelLayout} from 'layout';
 import {DEFAULT_PROPS, PROP_TYPES} from './ProtectedRoute.config';
 
 const TargetPage = ({Component, hasLayout}) => {
-
-  const isLoggedIn = false;
+	
+	const isLoggedIn = localStorage.getItem('IS_LOGGED_IN') === 'true';
 
   if (isLoggedIn) {
-    return <Navigate replace to={PATHS.HOME} />
+    return <Navigate replace to={PATHS.PANEL_PRODUCT} />
   }
 	
 	return hasLayout ? (

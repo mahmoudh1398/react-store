@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import Box from '@mui/material/Box';
@@ -9,6 +9,9 @@ import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider, responsiveFontSizes} from '@mui/material/styles';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {IconButton, InputAdornment, TextField} from "@mui/material";
+import {PATHS} from "config/routes.config";
+import {loginUser} from "api/login.api";
+import {ACCESS_TOKEN, IS_LOGGED_IN} from "config/variables.config";
 
 let theme = createTheme({
 	typography: {
@@ -19,45 +22,46 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 const PanelLogin = () => {
+	const navigate = useNavigate()
 	
 	const initialValues = {
-		email: '',
+		username: '',
 		password: ''
 	};
 	
-	const [formData, updateFormData] = React.useState(initialValues);
+	// const [formData, updateFormData] = React.useState(initialValues);
 	
-	const [values, setValues] = React.useState({
-		email: '',
-		password: '',
-		showPassword: false,
-	});
+	// const [values, setValues] = React.useState({
+	// 	username: '',
+	// 	password: '',
+	// 	// showPassword: false,
+	// });
 	
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-		updateFormData({
-			...formData,
-			
-			// Trimming any whitespace
-			[event.target.name]: event.target.value.trim()
-		});
-	};
+	// const handleChange = (prop) => (event) => {
+	// 	setValues({ ...values, [prop]: event.target.value });
+	// 	updateFormData({
+	// 		...formData,
+	//
+	// 		// Trimming any whitespace
+	// 		[event.target.name]: event.target.value.trim()
+	// 	});
+	// };
 	
-	const handleClickShowPassword = () => {
-		setValues({
-			...values,
-			showPassword: !values.showPassword,
-		});
-	};
+	// const handleClickShowPassword = () => {
+	// 	setValues({
+	// 		...values,
+	// 		showPassword: !values.showPassword,
+	// 	});
+	// };
 	
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
-	};
+	// const handleMouseDownPassword = (event) => {
+	// 	event.preventDefault();
+	// };
 	
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		console.log(formData);
-	};
+	// const handleSubmit = (event) => {
+	// 	event.preventDefault();
+	// 	console.log(formData);
+	// };
 	
 	return (
 		<ThemeProvider theme={theme}>
@@ -81,18 +85,24 @@ const PanelLogin = () => {
 							...initialValues
 						}}
 						validationSchema={Yup.object().shape({
-							email: Yup.string()
-								.email('لطفا یک ایمیل معتبر وارد کنید')
-								.required('ایمیل مورد نیاز است'),
+							username: Yup.string()
+								// .username('نام کاربری باید بیشتر از 5 کاراکتر باشد')
+								.required('نام کاربری مورد نیاز است'),
 							password: Yup.string()
 								.required('لطفا رمز عبور خود را وارد کنید')
-								.matches(
-									/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-									'رمز عبور باید شامل 8 کاراکتر، یک حروف بزرگ، یک حروف کوچک، یک عدد و یک کاراکتر خاص باشد'
-								)
+								// .matches(
+								// 	/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+								// 	'رمز عبور باید شامل 8 کاراکتر، یک حروف بزرگ، یک حروف کوچک، یک عدد و یک کاراکتر خاص باشد'
+								// )
 						})}
 						onSubmit={(values) => {
 							console.log(values);
+							loginUser(values).then((res) => {
+								console.log(res);
+								localStorage.setItem(ACCESS_TOKEN, res.token);
+								localStorage.setItem(IS_LOGGED_IN, true.toString());
+								navigate(PATHS.PANEL_PRODUCT);
+							});
 						}}
 					>
 						{({
@@ -109,16 +119,16 @@ const PanelLogin = () => {
 							<form autoComplete="off" noValidate onSubmit={handleSubmit}>
 								<Box sx={{ lg: { mt: 3 }}}>
 									<TextField
-										error={Boolean(touched.email && errors.email)}
+										error={Boolean(touched.username && errors.username)}
 										fullWidth
 										required
-										helperText={touched.email && errors.email}
-										label="ایمیل"
-										name="email"
+										helperText={touched.username && errors.username}
+										label="نام کاربری"
+										name="username"
 										onBlur={handleBlur}
 										onChange={handleChange}
 										type="text"
-										value={values.email}
+										value={values.username}
 										variant="outlined"
 										sx={{my: 2}}
 									/>
@@ -131,21 +141,21 @@ const PanelLogin = () => {
 										name="password"
 										onBlur={handleBlur}
 										onChange={handleChange}
-										type={values.showPassword ? 'text' : 'password'}
+										type='password'
 										value={values.password}
 										variant="outlined"
-										endAdornment={
-											<InputAdornment position="end">
-												<IconButton
-													aria-label="toggle password visibility"
-													onClick={handleClickShowPassword}
-													onMouseDown={handleMouseDownPassword}
-													edge="end"
-												>
-													{values.showPassword ? <VisibilityOff /> : <Visibility />}
-												</IconButton>
-											</InputAdornment>
-										}
+										// endAdornment={
+										// 	<InputAdornment position="end">
+										// 		<IconButton
+										// 			aria-label="toggle password visibility"
+										// 			onClick={handleClickShowPassword}
+										// 			onMouseDown={handleMouseDownPassword}
+										// 			edge="end"
+										// 		>
+										// 			{values.showPassword ? <VisibilityOff /> : <Visibility />}
+										// 		</IconButton>
+										// 	</InputAdornment>
+										// }
 										sx={{my: 2}}
 									/>
 									<Button

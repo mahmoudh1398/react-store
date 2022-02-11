@@ -12,22 +12,19 @@
     font-weight: bold;
   }
 
-  button {
-    all: unset;
-    background-color: #4CAF50;
-    border-radius: 3px;
-    color: #FFFAFA;
-    cursor: pointer;
-    text-align: center;
-    width: 100px;
-
-    &:hover {
-      background-color: #81C784;
-    }
+  &__orders_tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 35rem;
   }
 }
 
-.productTable {
+.ordersTable {
   border-collapse: collapse;
   width: 100%;
 
@@ -53,44 +50,37 @@
   }
 
   th:nth-child(2), td:nth-child(2) {
-    width: 35%;
+    text-align: center;
+    width: 30%;
   }
 
   th:nth-child(3), td:nth-child(3){
-    width: 35%;
+    text-align: center;
+    width: 30%;
   }
 
   th:nth-child(4), td:nth-child(4) {
-    width: 10%;
+    width: 20%;
   }
 
-  tr td:nth-child(4) {
+  td:nth-child(4) {
     align-items: center;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     text-align: center;
     width: 100%;
-  }
 
-  button {
-    all: unset;
-    color: #FFFAFA;
-    cursor: pointer;
-    width: 50px;
-  }
+    button {
+      all: unset;
+      color: #FFFAFA;
+      cursor: pointer;
+      width: 100px;
+    }
 
-  button:nth-child(1) {
-    background-color: #FFB74D;
-    border-radius: 3px;
-    margin-right: 10px;
-  }
-
-  button:nth-child(2) {
-    background-color: #EF5350;
-    border-radius: 3px;
-    margin-right: 10px;
+    button:nth-child(1) {
+      background-color: #FFB74D;
+      border-radius: 3px;
+      margin-right: 10px;
+    }
   }
 }
-
-
-

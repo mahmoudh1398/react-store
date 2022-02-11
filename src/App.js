@@ -10,16 +10,8 @@ const cacheRtl = createCache({
    stylisPlugins: [prefixer, rtlPlugin],
 });
 
-function RTL(props) {
+function App(props) {
    return <CacheProvider value={cacheRtl}><AppRoute /></CacheProvider>;
 }
 
-// function App() {
-//   return (
-//     <>
-//       <AppRoute />
-//     </>
-//   );
-// }
-
-export {RTL};
+export {App};
