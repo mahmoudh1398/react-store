@@ -1,8 +1,8 @@
 .panelNavbar {
     align-items: center;
-    background-color: #00BCD4;
+    background-color: #004D40;
     border-bottom: 1px solid #e5e5e5;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -17,6 +17,10 @@
 
     h1{
         font-size: 18px;
+
+        &:hover{
+            color: #FFFAFA;
+        }
     }
 }
 
@@ -44,6 +48,10 @@
     &:hover:before {
         width:100%;
     }
+
+    &:hover{
+        color: #FFFAFA;
+    }
 }
 
 .navButtons {
@@ -65,6 +73,7 @@
 
         &:hover {
             background-color: #FFE0B2;
+            color: #FFFAFA;
             transform: translateY(-3px);
         }
     }

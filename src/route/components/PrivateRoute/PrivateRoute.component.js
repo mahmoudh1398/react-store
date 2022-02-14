@@ -8,7 +8,6 @@ import {IS_LOGGED_IN} from "config/variables.config";
 const TargetPage = ({Component, hasLayout}) => {
 	
 	const isLoggedIn = localStorage.getItem(IS_LOGGED_IN) === 'true';
-	// const isLoggedIn = true;
 
   if (!isLoggedIn) {
     return <Navigate replace to={PATHS.PANEL_LOGIN} />

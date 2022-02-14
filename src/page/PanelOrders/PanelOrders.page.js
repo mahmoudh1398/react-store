@@ -23,7 +23,7 @@ const PanelOrders = () => {
 	});
 	const indexOfLastItem = pagination.currentPage * pagination.postsPerPage;
 	const indexOfFirstItem = indexOfLastItem - pagination.postsPerPage;
-	const currentProducts = orders.slice(indexOfFirstItem, indexOfLastItem);
+	const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
@@ -51,11 +51,11 @@ const PanelOrders = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{currentProducts.map( product =>
-						<tr key={product.id}>
-							<td>{product.name}</td>
-							<td>{product.price}</td>
-							<td>1399/1/5</td>
+					{currentOrders.map( Order =>
+						<tr key={Order.id}>
+							<td>{Order.name}</td>
+							<td>{Order.sumAmountOfCart}</td>
+							<td>{Order.orderRegistrationTime}</td>
 							<td><button>بررسی سفارش</button></td>
 						</tr>
 					)}

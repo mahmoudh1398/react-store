@@ -23,12 +23,9 @@
     padding: 8px;
   }
 
-  tr:nth-child(even) {
-    background-color: #E0F7FA;
-  }
-
-  tr:nth-child(1) {
-    background-color: #B2EBF2;
+  thead tr {
+    background-color: #004D40;
+    color: #FFFAFA;
     th {
       text-align: center;
     }

@@ -30,14 +30,14 @@ const PanelQuantity = () => {
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
 	
-	const blue = {
-		500: '#00BCD4',
-		600: '#00ACC1',
-		700: '#0097A7',
+	const teal = {
+		500: '#009688',
+		600: '#00897B',
+		700: '#00796B',
 	};
 	
 	const CustomButtonRoot = styled('button')`
-	  background-color: ${blue[500]};
+	  background-color: ${teal[500]};
 	  border-radius: 3px;
 	  color: #FFFAFA;
 	  transition: all 150ms ease;
@@ -47,11 +47,11 @@ const PanelQuantity = () => {
      width: 100px;
 
 	  &:hover {
-	    background-color: ${blue[600]};
+	    background-color: ${teal[600]};
 	  }
 	
 	  &.active {
-	    background-color: ${blue[700]};
+	    background-color: ${teal[700]};
 	  }
 	
 	  &.focusVisible {
@@ -109,7 +109,7 @@ const PanelQuantity = () => {
 				<tbody>
 					{currentProducts.map( product =>
 						<tr key={product.id}>
-							<td>{product.firstName}</td>
+							<td>{product.name}</td>
 							<td>{product.price}</td>
 							<td>{product.count}</td>
 						</tr>

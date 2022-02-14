@@ -6,7 +6,6 @@ import {useEffect} from "react";
 import { setProducts } from "redux/action/productAction";
 import { getProducts } from "api/products.api";
 import {BASE_URL} from "config/variables.config";
-import axios from "axios";
 
 const PanelProduct = () => {
 	const product = useSelector((state) => state.allProducts.products);
@@ -47,8 +46,8 @@ const PanelProduct = () => {
 				<tbody>
 					{currentProducts.map( product => (
 						<tr key={product.id}>
-							<td><img src={`${BASE_URL}/files/fc5cb2cb11a7cff0d2d05b09e2d65b82`} alt={product.firstname}/></td>
-							<td>{product.firstName}</td>
+							<td><img src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
+							<td>{product.name}</td>
 							<td>{product.category.name}</td>
 							<td>
 								<button>ویرایش</button>

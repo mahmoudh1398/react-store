@@ -14,7 +14,7 @@
 
   button {
     all: unset;
-    background-color: #4CAF50;
+    background-color: #004D40;
     border-radius: 3px;
     color: #FFFAFA;
     cursor: pointer;
@@ -22,7 +22,7 @@
     width: 100px;
 
     &:hover {
-      background-color: #81C784;
+      background-color: #00796B;
     }
   }
 }
@@ -37,12 +37,9 @@
     padding: 8px;
   }
 
-  tr:nth-child(even) {
-    background-color: #E0F7FA;
-  }
-
-  tr:nth-child(1) {
-    background-color: #B2EBF2;
+  thead tr {
+    background-color: #004D40;
+    color: #FFFAFA;
     th {
       text-align: center;
     }
@@ -68,8 +65,10 @@
     align-items: center;
     display: flex;
     justify-content: space-around;
+    margin: auto;
     text-align: center;
     width: 100%;
+    border: 1px solid red;
   }
 
   button {

@@ -86,19 +86,18 @@ const PanelLogin = () => {
 						}}
 						validationSchema={Yup.object().shape({
 							username: Yup.string()
-								// .username('نام کاربری باید بیشتر از 5 کاراکتر باشد')
+								.min(2, 'خیلی کوتاه')
+								.max(50, 'خیلی بلند')
 								.required('نام کاربری مورد نیاز است'),
 							password: Yup.string()
 								.required('لطفا رمز عبور خود را وارد کنید')
-								// .matches(
-								// 	/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-								// 	'رمز عبور باید شامل 8 کاراکتر، یک حروف بزرگ، یک حروف کوچک، یک عدد و یک کاراکتر خاص باشد'
-								// )
+								.matches(
+									/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+									'رمز عبور باید شامل 8 کاراکتر، یک حروف بزرگ، یک حروف کوچک، یک عدد و یک کاراکتر خاص باشد'
+								)
 						})}
 						onSubmit={(values) => {
-							console.log(values);
 							loginUser(values).then((res) => {
-								console.log(res);
 								localStorage.setItem(ACCESS_TOKEN, res.token);
 								localStorage.setItem(IS_LOGGED_IN, true.toString());
 								navigate(PATHS.PANEL_PRODUCT);
