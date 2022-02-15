@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from "react";
 import { setProducts } from "redux/action/productAction";
 import { getProducts } from "api/products.api";
-import {BASE_URL} from "config/variables.config";
+import {ProductsTable} from './ProductsTable.component';
 
 const PanelProduct = () => {
 	const product = useSelector((state) => state.allProducts.products);
@@ -34,30 +34,7 @@ const PanelProduct = () => {
 				<button>افزودن کالا</button>
 			</div>
 			
-			<table className={style.productTable}>
-				<thead>
-					<tr>
-						<th>تصویر</th>
-						<th>نام کالا</th>
-						<th>دسته بندی</th>
-						<th>عملیات</th>
-					</tr>
-				</thead>
-				<tbody>
-					{currentProducts.map( product => (
-						<tr key={product.id}>
-							<td><img src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
-							<td>{product.name}</td>
-							<td>{product.category.name}</td>
-							<td>
-								<button>ویرایش</button>
-								<button>حذف</button>
-							</td>
-						</tr>
-						)
-					)}
-				</tbody>
-			</table>
+			<ProductsTable products={currentProducts}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={product.length} paginate={paginate}
 			            nextPage={nextPage}

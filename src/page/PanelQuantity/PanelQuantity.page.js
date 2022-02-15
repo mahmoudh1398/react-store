@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getProducts} from "api/products.api";
 import {setProducts} from "redux/action/productAction";
+import {QuantitiesTable} from "./QuantitiesTable.component";
 
 const PanelQuantity = () => {
 	const product = useSelector((state) => state.allProducts.products);
@@ -16,7 +17,6 @@ const PanelQuantity = () => {
 	
 	useEffect(() => {
 		getProducts().then((data) => dispatch(setProducts(data)));
-		console.log(product);
 	}, []);
 	
 	const [pagination, setPagination] = React.useState({
@@ -25,7 +25,7 @@ const PanelQuantity = () => {
 	});
 	const indexOfLastItem = pagination.currentPage * pagination.postsPerPage;
 	const indexOfFirstItem = indexOfLastItem - pagination.postsPerPage;
-	const currentProducts = product.slice(indexOfFirstItem, indexOfLastItem);
+	const currentQuantities = product.slice(indexOfFirstItem, indexOfLastItem);
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
@@ -97,25 +97,8 @@ const PanelQuantity = () => {
 				<h3>مدیریت موجودی و قیمت ها</h3>
 				<CustomButton disabled>ذخیره</CustomButton>
 			</div>
-
-			<table className={style.quantityTable}>
-				<thead>
-					<tr>
-						<th>کالا</th>
-						<th>قیمت</th>
-						<th>موجودی</th>
-					</tr>
-				</thead>
-				<tbody>
-					{currentProducts.map( product =>
-						<tr key={product.id}>
-							<td>{product.name}</td>
-							<td>{product.price}</td>
-							<td>{product.count}</td>
-						</tr>
-					)}
-				</tbody>
-			</table>
+			
+			<QuantitiesTable quantities={currentQuantities}/>
 
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={product.length} paginate={paginate}
 			            nextPage={nextPage}

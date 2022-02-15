@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getOrders} from "api/orders.api";
 import {setOrders} from "redux/action/ordersAction";
+import {OrdersTable} from "./OrdersTabel.component";
 
 const PanelOrders = () => {
 	const [radio, setRadio] = useState(false);
@@ -14,7 +15,6 @@ const PanelOrders = () => {
 	
 	useEffect(() => {
 		getOrders().then((data) => dispatch(setOrders(data)));
-		console.log(orders);
 	}, []);
 	
 	const [pagination, setPagination] = React.useState({
@@ -41,26 +41,7 @@ const PanelOrders = () => {
 					       checked={radio ? false : true} onClick={() => setRadio(false)}/>
 				</form>
 			</div>
-			<table className={style.ordersTable}>
-				<thead>
-					<tr>
-						<th>کالا</th>
-						<th>قیمت</th>
-						<th>موجودی</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{currentOrders.map( Order =>
-						<tr key={Order.id}>
-							<td>{Order.name}</td>
-							<td>{Order.sumAmountOfCart}</td>
-							<td>{Order.orderRegistrationTime}</td>
-							<td><button>بررسی سفارش</button></td>
-						</tr>
-					)}
-				</tbody>
-			</table>
+			<OrdersTable orders={currentOrders} />
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={orders.length} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
