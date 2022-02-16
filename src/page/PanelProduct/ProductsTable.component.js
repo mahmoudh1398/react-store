@@ -16,10 +16,10 @@ const ProductsTable = ({products}) => {
 			<tbody>
 			{products.map( product => (
 					<tr key={product.id}>
-						<td><img src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
+						<td><img className={style.image} src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
 						<td>{product.name}</td>
 						<td>{product.category.name}</td>
-						<td>
+						<td className={style.actions}>
 							<button>ویرایش</button>
 							<button>حذف</button>
 						</td>
