@@ -24,6 +24,12 @@
     height: 50px;
   }
 
+  .category {
+    label {
+      margin-left: 10px;
+    }
+  }
+
   th:nth-child(1), td:nth-child(1) {
     width: 20%;
   }

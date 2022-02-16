@@ -1,19 +1,21 @@
-export const ActionTypes = {
+const ActionTypes = {
   SET_PRODUCTS: "SET_PRODUCTS",
-  SELECTED_PRODUCT: "SELECTED_PRODUCT",
+  FILTERED_PRODUCTS: "FILTERED_PRODUCTS",
   REMOVE_SELECTED_PRODUCT: "REMOVE_SELECTED_PRODUCT",
 };
 
-export const setProducts = (products) => {
+const setProducts = (products) => {
   return {
     type: ActionTypes.SET_PRODUCTS,
     payload: products,
   };
 };
 
-export const selectedProduct = (product) => {
+const filteredProducts = (products) => {
   return {
-    type: ActionTypes.SELECTED_PRODUCT,
-    payload: product,
+    type: ActionTypes.FILTERED_PRODUCTS,
+    payload: products,
   };
 };
+
+export {ActionTypes, setProducts, filteredProducts};

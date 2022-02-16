@@ -3,8 +3,8 @@ import * as React from "react";
 import {Pagination} from "components";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from "react";
-import { setProducts } from "redux/action/productAction";
-import { getProducts } from "api/products.api";
+import {filteredProducts} from "redux/action/productAction";
+import {getFilteredProducts} from "api/products.api";
 import {ProductsTable} from './ProductsTable.component';
 import http from "services/http.service";
 import {BASE_URL} from "config/variables.config";
@@ -14,26 +14,34 @@ let productsCount;
 
 const PanelProduct = () => {
 	
+	const [pagination, setPagination] = React.useState({
+		currentPage: 1,
+		postsPerPage: 5,
+	});
+	const [category, setCategory] = React.useState({
+		category: 'گوشی',
+	});
+	
 	async function getProductsCount() {
-		const response = await http.get(BASE_URL + '/products');
+		const response = await http.get(`${BASE_URL}/products?category.name=${category.category}`);
 		return response.data;
 	};
 	getProductsCount().then(response => productsCount = response.length);
 	
-	const products = useSelector((state) => state.allProducts.products);
+	const filtered_Products = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
 	
-	const [pagination, setPagination] = React.useState({
-		currentPage: 1,
-		postsPerPage: 10,
-	});
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
 	
+	const handleCategory = (category) => {
+		setCategory({category});
+	};
+	
 	useEffect(() => {
-		getProducts(pagination.currentPage).then((data) => {dispatch(setProducts(data))});
-	}, [pagination.currentPage]);
+		getFilteredProducts(pagination.currentPage, category.category).then((data) => {dispatch(filteredProducts(data))});
+	}, [pagination.currentPage, category.category]);
 	
 	return (
 		<div className={style.wrapper}>
@@ -43,7 +51,7 @@ const PanelProduct = () => {
 				<button>افزودن کالا</button>
 			</div>
 			
-			<ProductsTable products={products}/>
+			<ProductsTable products={filtered_Products} changeCategory={handleCategory}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}

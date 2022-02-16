@@ -10,8 +10,8 @@ import {useEffect} from "react";
 import {getProducts} from "api/products.api";
 import {setProducts} from "redux/action/productAction";
 import {QuantitiesTable} from "./QuantitiesTable.component";
-import http from "../../services/http.service";
-import {BASE_URL} from "../../config/variables.config";
+import http from "services/http.service";
+import {BASE_URL} from "config/variables.config";
 
 let productsCount;
 
@@ -28,7 +28,7 @@ const PanelQuantity = () => {
 	
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
-		postsPerPage: 10
+		postsPerPage: 5
 	});
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
