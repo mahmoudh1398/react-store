@@ -2,12 +2,11 @@ import style from "./ProductsTable.module.scss";
 import {BASE_URL} from "config/variables.config";
 import * as React from "react";
 
-
-const ProductsTable = ({products, changeCategory}) => {
+const ProductsTable = ({products, changeCategory, categories}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
-	};
+	}
 	
 	return(
 		<table className={style.productTable}>
@@ -18,8 +17,9 @@ const ProductsTable = ({products, changeCategory}) => {
 				<th className={style.category}>
 					<label htmlFor="categories">دسته بندی</label>
 					<select name="category" id="categories" onChange={handleCategory}>
-						<option value="گوشی">گوشی</option>
-						<option value="لپتاپ">لپتاپ</option>
+						{categories.map((category) => (
+							<option key={category.id} value={category.name}>{category.name}</option>
+						))}
 					</select>
 				</th>
 				<th>عملیات</th>
