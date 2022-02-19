@@ -18,8 +18,8 @@ const ProductsTable = ({products, changeCategory}) => {
 				<th className={style.category}>
 					<label htmlFor="categories">دسته بندی</label>
 					<select name="category" id="categories" onChange={handleCategory}>
+						<option value="گوشی">گوشی</option>
 						<option value="لپتاپ">لپتاپ</option>
-						<option value="گوشی" selected>گوشی</option>
 					</select>
 				</th>
 				<th>عملیات</th>

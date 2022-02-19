@@ -1,5 +1,6 @@
 import style from "./OrdersTable.module.scss";
 import * as React from "react";
+import moment from 'jalali-moment'
 
 const OrdersTable = ({orders}) => {
 	return (
@@ -17,7 +18,7 @@ const OrdersTable = ({orders}) => {
 				<tr key={Order.id}>
 					<td>{Order.name}</td>
 					<td>{Order.sumAmountOfCart}</td>
-					<td>{Order.orderRegistrationTime}</td>
+					<td>{moment(new Date(Order.orderRegistrationTime), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</td>
 					<td><button>بررسی سفارش</button></td>
 				</tr>
 			)}

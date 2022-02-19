@@ -12,7 +12,7 @@ export const getProducts = async (currentPage) => {
 export const getFilteredProducts = async (currentPage, category) => {
   try {
     const response = await http.get(`/products?_page=${currentPage}&_limit=5&category.name=${category}`);
-    return response.data;
+    return [response.data, response.headers["x-total-count"]];
   } catch (e) {
     return Promise.reject(e);
   }

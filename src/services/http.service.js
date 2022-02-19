@@ -21,11 +21,11 @@ class HttpService {
     });
     
     axios.interceptors.response.use((response) => {
-         console.log('Interceptor response success', response);
+         // console.log('Interceptor response success', response);
          return response;
        },
        (error) => {
-         console.log('Interceptor response error' , error.response && (error.response.data === 'Token Expired!' || error.response.data === 'Invalid Token!'));
+         // console.log('Interceptor response error' , error.response && (error.response.data === 'Token Expired!' || error.response.data === 'Invalid Token!'));
          if (error.response && (error.response.data === 'Token Expired!' || error.response.data === 'Invalid Token!')) {
            localStorage.setItem(IS_LOGGED_IN, false.toString());
            // window.location.href = 'http://localhost:3000' + PATHS.SIGN_IN;

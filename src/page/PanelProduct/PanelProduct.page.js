@@ -5,14 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from "react";
 import {filteredProducts} from "redux/action/productAction";
 import {getFilteredProducts} from "api/products.api";
-import {ProductsTable} from './ProductsTable.component';
-import http from "services/http.service";
-import {BASE_URL} from "config/variables.config";
+import {ProductsTable} from './components';
 
 
 let productsCount;
 
-const PanelProduct = () => {
+function PanelProduct() {
 	
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
@@ -21,12 +19,6 @@ const PanelProduct = () => {
 	const [category, setCategory] = React.useState({
 		category: 'گوشی',
 	});
-	
-	async function getProductsCount() {
-		const response = await http.get(`${BASE_URL}/products?category.name=${category.category}`);
-		return response.data;
-	};
-	getProductsCount().then(response => productsCount = response.length);
 	
 	const filtered_Products = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
@@ -40,7 +32,10 @@ const PanelProduct = () => {
 	};
 	
 	useEffect(() => {
-		getFilteredProducts(pagination.currentPage, category.category).then((data) => {dispatch(filteredProducts(data))});
+		getFilteredProducts(pagination.currentPage, category.category).then((response) => {
+			productsCount = +response[1];
+			dispatch(filteredProducts(response[0]));
+		});
 	}, [pagination.currentPage, category.category]);
 	
 	return (
