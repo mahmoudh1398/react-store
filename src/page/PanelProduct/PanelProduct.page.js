@@ -41,9 +41,11 @@ function PanelProduct() {
 		});
 	}, [pagination.currentPage, category.category]);
 	
-	getCategories().then((data) => {
-		dispatch(setCategories(data));
-	});
+	useEffect(() => {
+		getCategories().then((data) => {
+			dispatch(setCategories(data));
+		});
+	}, []);
 	
 	return (
 		<div className={style.wrapper}>

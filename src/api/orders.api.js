@@ -1,9 +1,9 @@
 import http from "services/http.service";
 
-export const getOrders = async (dispatch) => {
+export const getOrders = async (currentPage, category) => {
   try {
-    const response = await http.get(`/orders`);
-    return response.data;
+    const response = await http.get(`/orders?_page=${currentPage}&_limit=5&delivered=${category}`);
+    return [response.data, response.headers["x-total-count"]];
   } catch (e) {
     return Promise.reject(e);
   }
