@@ -7,8 +7,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider, responsiveFontSizes} from '@mui/material/styles';
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {IconButton, InputAdornment, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import {PATHS} from "config/routes.config";
 import {loginUser} from "api/login.api";
 import {ACCESS_TOKEN, IS_LOGGED_IN} from "config/variables.config";
@@ -28,40 +27,6 @@ const PanelLogin = () => {
 		username: '',
 		password: ''
 	};
-	
-	// const [formData, updateFormData] = React.useState(initialValues);
-	
-	// const [values, setValues] = React.useState({
-	// 	username: '',
-	// 	password: '',
-	// 	// showPassword: false,
-	// });
-	
-	// const handleChange = (prop) => (event) => {
-	// 	setValues({ ...values, [prop]: event.target.value });
-	// 	updateFormData({
-	// 		...formData,
-	//
-	// 		// Trimming any whitespace
-	// 		[event.target.name]: event.target.value.trim()
-	// 	});
-	// };
-	
-	// const handleClickShowPassword = () => {
-	// 	setValues({
-	// 		...values,
-	// 		showPassword: !values.showPassword,
-	// 	});
-	// };
-	
-	// const handleMouseDownPassword = (event) => {
-	// 	event.preventDefault();
-	// };
-	
-	// const handleSubmit = (event) => {
-	// 	event.preventDefault();
-	// 	console.log(formData);
-	// };
 	
 	return (
 		<ThemeProvider theme={theme}>
@@ -143,18 +108,6 @@ const PanelLogin = () => {
 										type='password'
 										value={values.password}
 										variant="outlined"
-										// endAdornment={
-										// 	<InputAdornment position="end">
-										// 		<IconButton
-										// 			aria-label="toggle password visibility"
-										// 			onClick={handleClickShowPassword}
-										// 			onMouseDown={handleMouseDownPassword}
-										// 			edge="end"
-										// 		>
-										// 			{values.showPassword ? <VisibilityOff /> : <Visibility />}
-										// 		</IconButton>
-										// 	</InputAdornment>
-										// }
 										sx={{my: 2}}
 									/>
 									<Button

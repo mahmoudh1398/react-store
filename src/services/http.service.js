@@ -1,8 +1,8 @@
 import axios from 'axios';
-// import {PATHS} from 'configs/routes.config';
 import {LOGIN} from 'config/url.config';
 import {ACCESS_TOKEN, BASE_URL, IS_LOGGED_IN} from 'config/variables.config';
 import {toast} from 'react-toastify';
+import {PATHS} from "config/routes.config";
 
 class HttpService {
   constructor() {
@@ -28,7 +28,7 @@ class HttpService {
          // console.log('Interceptor response error' , error.response && (error.response.data === 'Token Expired!' || error.response.data === 'Invalid Token!'));
          if (error.response && (error.response.data === 'Token Expired!' || error.response.data === 'Invalid Token!')) {
            localStorage.setItem(IS_LOGGED_IN, false.toString());
-           // window.location.href = 'http://localhost:3000' + PATHS.SIGN_IN;
+           window.location.href = 'http://localhost:3000' + PATHS.PANEL_LOGIN;
          } else {
            toast.error(error.response.data)
            

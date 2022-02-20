@@ -6,14 +6,18 @@ import {useEffect} from "react";
 import {filteredProducts} from "redux/action/productAction";
 import {getFilteredProducts} from "api/products.api";
 import {ProductsTable} from './components';
-import {getCategories} from "../../api/categories.api";
-import {setCategories} from "../../redux/action/categoriesAction";
+import {getCategories} from "api/categories.api";
+import {setCategories} from "redux/action/categoriesAction";
+import {AddOrEditModal} from "./components";
 
 
 let productsCount;
 
 function PanelProduct() {
 	
+	const [open, setOpen] = React.useState(false);
+	const handleOpen = () => setOpen(true);
+	const handleClose = () => setOpen(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
 		postsPerPage: 5,
@@ -52,7 +56,7 @@ function PanelProduct() {
 			
 			<div className={style.main_header}>
 				<h3>مدیریت کالاها</h3>
-				<button>افزودن کالا</button>
+				<button onClick={handleOpen}>افزودن کالا</button>
 			</div>
 			
 			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}/>
@@ -60,7 +64,8 @@ function PanelProduct() {
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
-		
+			
+			{open && <AddOrEditModal open={open} close={handleClose} categories={categories}/>}
 		</div>
 	);
 };

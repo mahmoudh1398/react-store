@@ -1,0 +1,52 @@
+.product_modal {
+  text-align: center;
+
+  div {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input[type="file"] {
+      direction: ltr;
+      width: 100%;
+    }
+
+    input[type="text"], select, textarea {
+      margin-top: 3px;
+      width: 100%;
+    }
+  }
+
+  button {
+    color: #fff;
+    margin-top: 20px;
+    width: 100px;
+    font-size: 1.2rem;
+    background-color: #FFB74D;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    padding: 0.7rem 1.2rem;
+
+    &:hover {
+      background: rgba(#FFB74D, 0.8);
+    }
+  }
+
+  .error {
+    color: #e63946;
+    font-size: 1rem;
+    margin-top: 0.3rem;
+  }
+
+  .disabled_btn {
+    cursor: not-allowed;
+    background: rgba(#FFB74D, 0.8);
+  }
+}
+
