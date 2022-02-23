@@ -1,2 +1,3 @@
 export {ProductsTable} from './Table/ProductsTable.component';
-export {AddOrEditModal} from './AddOrEditModal/AddOrEditModal.component';
+export {AddModal} from './AddModal/AddModal.component';
+export {EditModal} from './EditModal/EditModal.component';

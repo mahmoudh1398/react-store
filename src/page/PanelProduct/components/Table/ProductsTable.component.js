@@ -4,10 +4,14 @@ import * as React from "react";
 import http from "services/http.service";
 
 
-const ProductsTable = ({products, changeCategory, categories, refresh, toast}) => {
+const ProductsTable = ({products, changeCategory, categories, refresh, toast, openEditModal}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
+	}
+	
+	function handleEdit (product) {
+		openEditModal(product);
 	}
 	
 	function handleDelete(id) {
@@ -51,10 +55,8 @@ const ProductsTable = ({products, changeCategory, categories, refresh, toast}) =
 						<td>{product.name}</td>
 						<td>{product.category.name}</td>
 						<td className={style.actions}>
-							<button>ویرایش</button>
-							<button onClick={() => handleDelete(product.id)}>
-								حذف
-							</button>
+							<button onClick={() => handleEdit(product)}>ویرایش</button>
+							<button onClick={() => handleDelete(product.id)}>حذف</button>
 						</td>
 					</tr>
 				)

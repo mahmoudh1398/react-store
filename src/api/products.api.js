@@ -1,4 +1,5 @@
 import http from "services/http.service";
+import {UPLOAD_IMG, PRODUCTS} from 'config/url.config';
 
 export const getProducts = async (currentPage) => {
   try {
@@ -17,3 +18,23 @@ export const getFilteredProducts = async (currentPage, category) => {
     return Promise.reject(e);
   }
 };
+
+export async function uploadImg(data) {
+  try {
+    const response = await http.post(UPLOAD_IMG, data)
+    console.log(response.data)
+    return  response.data
+  }catch(e){
+    return e
+  }
+}
+
+export async function editData({id ,data}) {
+  try {
+    const response = await http.put(`${PRODUCTS}/${id}`,data)
+    console.log(response.data)
+    return  response.data
+  }catch(e){
+    return e
+  }
+}

@@ -8,18 +8,21 @@ import {getFilteredProducts} from "api/products.api";
 import {ProductsTable} from './components';
 import {getCategories} from "api/categories.api";
 import {setCategories} from "redux/action/categoriesAction";
-import {AddOrEditModal} from "./components";
+import {AddModal} from "./components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {EditModal} from "./components";
 
 toast.configure();
 let productsCount;
 
 function PanelProduct() {
-	
-	const [open, setOpen] = React.useState(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const [addModalOpen, setAddModalOpen] = React.useState(false);
+	const handleAddModalOpen = () => setAddModalOpen(true);
+	const handleAddModalClose = () => setAddModalOpen(false);
+	const [editModalOpen, setEditModalOpen] = React.useState(false);
+	const handleEditModalOpen = () => setEditModalOpen(true);
+	const handleEditModalClose = () => setEditModalOpen(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
 		postsPerPage: 5,
@@ -28,6 +31,7 @@ function PanelProduct() {
 		category: 'لپتاپ',
 	});
 	const [refresh, setRefresh] = React.useState(false);
+	const [editedProduct, setEditedProduct] = React.useState({});
 	
 	const filtered_Products = useSelector((state) => state.allProducts.products);
 	const categories = useSelector((state) => state.allCategories.categories);
@@ -79,24 +83,31 @@ function PanelProduct() {
 		}
 	};
 	
+	const handleProductEdit = (product) => {
+		setEditedProduct(product);
+		handleEditModalOpen();
+	};
+	
 	return (
 		<div className={style.wrapper}>
 			
 			<div className={style.main_header}>
 				<h3>مدیریت کالاها</h3>
-				<button onClick={handleOpen}>افزودن کالا</button>
+				<button onClick={handleAddModalOpen}>افزودن کالا</button>
 			</div>
 			
 			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
-				refresh={handleRefresh} toast={notify}/>
+				refresh={handleRefresh} toast={notify} openEditModal={handleProductEdit}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
 			
-			{open && <AddOrEditModal open={open} close={handleClose} categories={categories}
-			                         refresh={handleRefresh} toast={notify}/>}
-			
+			{addModalOpen && <AddModal open={addModalOpen} close={handleAddModalClose} categories={categories}
+			                   refresh={handleRefresh} toast={notify}/>}
+			{editModalOpen && <EditModal targetProduct={editedProduct} open={editModalOpen} toast={notify}
+			                             close={handleEditModalClose}
+			                             refresh={handleRefresh}/>}
 			<ToastContainer newestOnTop={false} rtl pauseOnFocusLoss />
 		</div>
 	);

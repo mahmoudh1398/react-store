@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import styles from "./AddOrEditModal.module.scss";
+import styles from "./AddModal.module.scss";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import FormData from "form-data";
@@ -54,7 +54,7 @@ const initialValues = {
 	description: '',
 };
 
-function AddOrEditModal({open, close, categories, refresh, toast}) {
+function AddModal({open, close, categories, refresh, toast}) {
 	
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [thumbnail , setThumbnail] = React.useState('');
@@ -68,7 +68,7 @@ function AddOrEditModal({open, close, categories, refresh, toast}) {
 		initialValues.image = Array.from(event.target.files);
 	};
 	
-	const handleUpload = () => {
+	const handleImagesUpload = () => {
 		if (initialValues.image.length !== 0) {
 			let data = new FormData();
 			data.append('image', initialValues.image[0]);
@@ -209,7 +209,7 @@ function AddOrEditModal({open, close, categories, refresh, toast}) {
 												multiple
 												onChange={handleImagesSelect}
 											/>
-											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleUpload}>
+											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleImagesUpload}>
 												آپلود تصاویر
 											</Button>
 										</div>
@@ -294,4 +294,4 @@ function AddOrEditModal({open, close, categories, refresh, toast}) {
 	);
 }
 
-export {AddOrEditModal}
+export {AddModal}
