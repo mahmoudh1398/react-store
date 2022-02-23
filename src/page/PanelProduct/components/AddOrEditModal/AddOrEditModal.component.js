@@ -46,16 +46,15 @@ const signInSchema = Yup.object().shape({
 
 const initialValues = {
 	image: [],
-	thumbnail: '',
+	thumbnail: [],
 	name: '',
 	price: 0,
 	count: 0,
 	category: '',
 	description: '',
 };
-const notify = () => toast("Wow so easy !");
 
-function AddOrEditModal({open, close, categories, refresh}) {
+function AddOrEditModal({open, close, categories, refresh, toast}) {
 	
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [thumbnail , setThumbnail] = React.useState('');
@@ -70,22 +69,26 @@ function AddOrEditModal({open, close, categories, refresh}) {
 	};
 	
 	const handleUpload = () => {
-		let data = new FormData();
-		data.append('image', initialValues.image[0]);
-		try {
-			http
-				.post(`/upload`, data, {
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				})
-				.then((res) => {
-					console.log(res);
-					uploadedImages ? setUploadedImages([...uploadedImages, res.data.filename]) : setUploadedImages([res.data.filename]);
-				});
-		}
-		catch (error) {
-			console.log(error);
+		if (initialValues.image.length !== 0) {
+			let data = new FormData();
+			data.append('image', initialValues.image[0]);
+			try {
+				http
+					.post(`/upload`, data, {
+						headers: {
+							"Content-Type": "multipart/form-data",
+						},
+					})
+					.then((res) => {
+						console.log(res);
+						uploadedImages ? setUploadedImages([...uploadedImages, res.data.filename]) : setUploadedImages([res.data.filename]);
+						toast('تصویر با موفقیت آپلود شد', 'success');
+					});
+			}
+			catch (error) {
+				console.log(error);
+				toast('خطا در آپلود تصویر', 'error');
+			}
 		}
 	};
 	
@@ -94,22 +97,27 @@ function AddOrEditModal({open, close, categories, refresh}) {
 	};
 	
 	const handleThumbnailUpload = () => {
-		let data = new FormData();
-		data.append('image', initialValues.thumbnail[0]);
-		try {
-			http
-				.post(`/upload`, data, {
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				})
-				.then((res) => {
-					console.log(res);
-					setThumbnail(res.data.filename);
-				});
-		}
-		catch (error) {
-			console.log(error);
+		if (initialValues.thumbnail.length !== 0) {
+			let data = new FormData();
+			data.append('image', initialValues.thumbnail[0]);
+			try {
+				http
+					.post(`/upload`, data, {
+						headers: {
+							"Content-Type": "multipart/form-data",
+						},
+					})
+					.then((res) => {
+						console.log(res);
+						setThumbnail(res.data.filename);
+						// thumbnail ? setThumbnail(res.data.filename) : setThumbnail('');
+						toast('تصویر با موفقیت آپلود شد', 'success');
+					});
+			}
+			catch (error) {
+				console.log(error);
+				toast('خطا در آپلود تصویر', 'error');
+			}
 		}
 	};
 	
@@ -145,15 +153,15 @@ function AddOrEditModal({open, close, categories, refresh}) {
 			http
 				.post(`/products?`, formValues)
 				.then((res) => {
-					if (res.status === 201) {
-						close();
-						refresh();
-					}
 					console.log(res);
+					close();
+					refresh();
+					toast('کالا با موفقیت اضافه شد', 'success');
 				});
 		}
 		catch (error) {
 			console.log(error);
+			toast('خطا در افزودن کالا', 'error');
 		}
 	};
 	

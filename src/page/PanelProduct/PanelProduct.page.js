@@ -9,8 +9,10 @@ import {ProductsTable} from './components';
 import {getCategories} from "api/categories.api";
 import {setCategories} from "redux/action/categoriesAction";
 import {AddOrEditModal} from "./components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
+toast.configure();
 let productsCount;
 
 function PanelProduct() {
@@ -53,6 +55,30 @@ function PanelProduct() {
 		});
 	}, []);
 	
+	const notify = (message, type) => {
+		if (type === 'success') {
+			toast.success(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} else if (type === 'error') {
+			toast.error(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+	};
+	
 	return (
 		<div className={style.wrapper}>
 			
@@ -62,13 +88,16 @@ function PanelProduct() {
 			</div>
 			
 			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
-				refresh={handleRefresh}/>
+				refresh={handleRefresh} toast={notify}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
 			
-			{open && <AddOrEditModal open={open} close={handleClose} categories={categories} refresh={handleRefresh}/>}
+			{open && <AddOrEditModal open={open} close={handleClose} categories={categories}
+			                         refresh={handleRefresh} toast={notify}/>}
+			
+			<ToastContainer newestOnTop={false} rtl pauseOnFocusLoss />
 		</div>
 	);
 };

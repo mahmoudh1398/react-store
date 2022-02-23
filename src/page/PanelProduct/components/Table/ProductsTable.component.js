@@ -4,7 +4,7 @@ import * as React from "react";
 import http from "services/http.service";
 
 
-const ProductsTable = ({products, changeCategory, categories, refresh}) => {
+const ProductsTable = ({products, changeCategory, categories, refresh, toast}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
@@ -15,13 +15,15 @@ const ProductsTable = ({products, changeCategory, categories, refresh}) => {
 			http
 				.delete(`/products/${id}`)
 				.then((res) => {
+					console.log(res);
 					if (res.status === 200) {
 						refresh();
+						toast('کالا با موفقیت حذف شد', 'success');
 					}
-					console.log(res)
 				});
 		} catch (e) {
 			console.log(e);
+			toast('خطا در حذف کالا', 'error');
 		}
 	}
 	
