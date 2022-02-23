@@ -25,6 +25,7 @@ function PanelProduct() {
 	const [category, setCategory] = React.useState({
 		category: 'لپتاپ',
 	});
+	const [refresh, setRefresh] = React.useState(false);
 	
 	const filtered_Products = useSelector((state) => state.allProducts.products);
 	const categories = useSelector((state) => state.allCategories.categories);
@@ -37,13 +38,14 @@ function PanelProduct() {
 	const handleCategory = (category) => {
 		setCategory({category});
 	};
+	const handleRefresh = () => {setRefresh(!refresh);};
 	
 	useEffect(() => {
 		getFilteredProducts(pagination.currentPage, category.category).then((response) => {
 			productsCount = +response[1];
 			dispatch(filteredProducts(response[0]));
 		});
-	}, [pagination.currentPage, category.category]);
+	}, [pagination.currentPage, category.category, refresh]);
 	
 	useEffect(() => {
 		getCategories().then((data) => {
@@ -59,13 +61,14 @@ function PanelProduct() {
 				<button onClick={handleOpen}>افزودن کالا</button>
 			</div>
 			
-			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}/>
+			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
+				refresh={handleRefresh}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
 			
-			{open && <AddOrEditModal open={open} close={handleClose} categories={categories}/>}
+			{open && <AddOrEditModal open={open} close={handleClose} categories={categories} refresh={handleRefresh}/>}
 		</div>
 	);
 };

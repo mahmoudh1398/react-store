@@ -9,7 +9,12 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from "./AddOrEditModal.module.scss";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CKEditor from '@ckeditor/ckeditor5-react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import FormData from "form-data";
+import http from "services/http.service";
+import Button from "@mui/material/Button";
+import {useState} from "react";
+
 
 const style = {
 	position: 'absolute',
@@ -17,6 +22,9 @@ const style = {
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 	width: 500,
+	overflow:'scroll',
+	height:'90%',
+	display:'block',
 	bgcolor: 'background.paper',
 	border: '2px solid #000',
 	boxShadow: 24,
@@ -31,26 +39,131 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 const signInSchema = Yup.object().shape({
-	photo: Yup.string().required('پر کردن این فیلد اجباری است'),
-	productName: Yup.string().required('پر کردن این فیلد اجباری است'),
-	category: Yup.string().required('پر کردن این فیلد اجباری است'),
-	description: Yup.string().required('پر کردن این فیلد اجباری است'),
+	name: Yup.string().required('پر کردن این فیلد اجباری است'),
+	price: Yup.number().required('پر کردن این فیلد اجباری است'),
+	count: Yup.number().required('پر کردن این فیلد اجباری است'),
 });
+
 const initialValues = {
-	photo: '',
-	productName: '',
+	image: [],
+	thumbnail: '',
+	name: '',
+	price: 0,
+	count: 0,
 	category: '',
 	description: '',
 };
+const notify = () => toast("Wow so easy !");
 
-function AddOrEditModal({open, close, categories}) {
+function AddOrEditModal({open, close, categories, refresh}) {
+	
+	const [uploadedImages, setUploadedImages] = useState([]);
+	const [thumbnail , setThumbnail] = React.useState('');
+	const [category, setCategory] = React.useState({
+		id: null,
+		name: '',
+	});
+	const [description, setDescription] = React.useState('');
+	
+	const handleImagesSelect = (event) => {
+		initialValues.image = Array.from(event.target.files);
+	};
+	
+	const handleUpload = () => {
+		let data = new FormData();
+		data.append('image', initialValues.image[0]);
+		try {
+			http
+				.post(`/upload`, data, {
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				})
+				.then((res) => {
+					console.log(res);
+					uploadedImages ? setUploadedImages([...uploadedImages, res.data.filename]) : setUploadedImages([res.data.filename]);
+				});
+		}
+		catch (error) {
+			console.log(error);
+		}
+	};
+	
+	const handleThumbnailSelect = (event) => {
+		initialValues.thumbnail = Array.from(event.target.files);
+	};
+	
+	const handleThumbnailUpload = () => {
+		let data = new FormData();
+		data.append('image', initialValues.thumbnail[0]);
+		try {
+			http
+				.post(`/upload`, data, {
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				})
+				.then((res) => {
+					console.log(res);
+					setThumbnail(res.data.filename);
+				});
+		}
+		catch (error) {
+			console.log(error);
+		}
+	};
+	
+	const handleCategory = (event) => {
+		switch (event.target.value) {
+			case 'لپتاپ':
+				setCategory({
+					id: 1,
+					name: 'لپتاپ',
+				});
+				break;
+			case 'گوشی':
+				setCategory({
+					id: 2,
+					name: 'گوشی',
+				});
+				break;
+			default:
+				break;
+		}
+	};
+	
+	const handleCKEditorState = (event, editor) => {
+		setDescription(editor.getData());
+	};
+	
+	const handleSubmit = (formValues) => {
+		formValues.image = uploadedImages;
+		formValues.thumbnail= thumbnail;
+		formValues.category = category;
+		formValues.description = description;
+		try {
+			http
+				.post(`/products?`, formValues)
+				.then((res) => {
+					if (res.status === 201) {
+						close();
+						refresh();
+					}
+					console.log(res);
+				});
+		}
+		catch (error) {
+			console.log(error);
+		}
+	};
+	
 	
 	return (
 		<ThemeProvider theme={theme}>
 			<div>
 				<Modal
 					open={open}
-					onClose={close}
+					// onClose={close}
 				>
 					<Box sx={style}>
 						<IconButton
@@ -72,36 +185,74 @@ function AddOrEditModal({open, close, categories}) {
 							initialValues={initialValues}
 							validationSchema={signInSchema}
 							onSubmit={(values) => {
-							
+								handleSubmit(values);
 							}}
 						>
 							{(formik) => {
-								const { errors, touched, isValid, dirty } = formik;
+								const { isValid, dirty } = formik;
 								return (
 									<Form className={styles.product_modal}>
 										<div>
-											<label htmlFor="photo">تصویر کالا:</label>
-											<Field
+											<label htmlFor="image">تصاویر کالا:</label>
+											<input
 												type="file"
-												name="photo"
-												id="photo"
+												name="image"
+												id="image"
+												multiple
+												onChange={handleImagesSelect}
 											/>
-											<ErrorMessage name="photo" component="span" className={styles.error} />
+											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleUpload}>
+												آپلود تصاویر
+											</Button>
 										</div>
 										
 										<div>
-											<label htmlFor="productName">نام کالا:</label>
+											<label htmlFor="thumbnail">تصویر بند انگشتی کالا:</label>
+											<input
+												type="file"
+												name="thumbnail"
+												id="thumbnail"
+												onChange={handleThumbnailSelect}
+											/>
+											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleThumbnailUpload}>
+												آپلود تصویر
+											</Button>
+										</div>
+										
+										<div>
+											<label htmlFor="name">نام کالا:</label>
 											<Field
 												type="text"
-												name="productName"
-												id="productName"
+												name="name"
+												id="name"
 											/>
-											<ErrorMessage name="productName" component="span" className={styles.error}/>
+											<ErrorMessage name="name" component="span" className={styles.error}/>
+										</div>
+										
+										<div>
+											<label htmlFor="name">قیمت کالا:</label>
+											<Field
+												type="number"
+												name="price"
+												id="price"
+											/>
+											<ErrorMessage name="price" component="span" className={styles.error}/>
+										</div>
+										
+										<div>
+											<label htmlFor="name">تعداد کالا:</label>
+											<Field
+												type="number"
+												name="count"
+												id="count"
+											/>
+											<ErrorMessage name="count" component="span" className={styles.error}/>
 										</div>
 										
 										<div>
 											<label htmlFor="category">دسته بندی:</label>
-											<Field as="select" name="category" id="category">
+											<Field as="select" name="category" id="category"
+											       onChange={handleCategory} value={category.name}>
 												{categories.map((category) => (
 													<option key={category.id} value={category.name}>{category.name}</option>
 												))}
@@ -111,8 +262,10 @@ function AddOrEditModal({open, close, categories}) {
 										
 										<div>
 											<label htmlFor="description">توضیحات:</label>
-											<Field as="textarea" name="description" id="description" rows="5"/>
-											<ErrorMessage name="description" component="span" className={styles.error}/>
+											<CKEditor
+												editor={ClassicEditor}
+												onChange={handleCKEditorState}
+											/>
 										</div>
 										
 										<button

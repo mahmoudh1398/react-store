@@ -1,11 +1,28 @@
 import style from "./ProductsTable.module.scss";
 import {BASE_URL} from "config/variables.config";
 import * as React from "react";
+import http from "services/http.service";
 
-const ProductsTable = ({products, changeCategory, categories}) => {
+
+const ProductsTable = ({products, changeCategory, categories, refresh}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
+	}
+	
+	function handleDelete(id) {
+		try {
+			http
+				.delete(`/products/${id}`)
+				.then((res) => {
+					if (res.status === 200) {
+						refresh();
+					}
+					console.log(res)
+				});
+		} catch (e) {
+			console.log(e);
+		}
 	}
 	
 	return(
@@ -33,7 +50,9 @@ const ProductsTable = ({products, changeCategory, categories}) => {
 						<td>{product.category.name}</td>
 						<td className={style.actions}>
 							<button>ویرایش</button>
-							<button>حذف</button>
+							<button onClick={() => handleDelete(product.id)}>
+								حذف
+							</button>
 						</td>
 					</tr>
 				)
