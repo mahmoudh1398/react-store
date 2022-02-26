@@ -1,10 +1,9 @@
 import style from "./ProductsTable.module.scss";
 import {BASE_URL} from "config/variables.config";
 import * as React from "react";
-import http from "services/http.service";
 
 
-const ProductsTable = ({products, changeCategory, categories, refresh, toast, openEditModal, prevPage}) => {
+const ProductsTable = ({products, changeCategory, categories, openEditModal, openDeleteModal}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
@@ -14,24 +13,8 @@ const ProductsTable = ({products, changeCategory, categories, refresh, toast, op
 		openEditModal(product);
 	}
 	
-	function handleDelete(id) {
-		try {
-			http
-				.delete(`/products/${id}`)
-				.then((res) => {
-					console.log(res);
-					if (res.status === 200) {
-						if (products.length-1 === 0 || products.length-1 <= 0) {
-							prevPage();
-						}
-						refresh();
-						toast('کالا با موفقیت حذف شد', 'success');
-					}
-				});
-		} catch (e) {
-			console.log(e);
-			toast('خطا در حذف کالا', 'error');
-		}
+	function handleDelete(id, name) {
+		openDeleteModal(id, name);
 	}
 	
 	return(
@@ -59,7 +42,7 @@ const ProductsTable = ({products, changeCategory, categories, refresh, toast, op
 						<td>{product.category.name}</td>
 						<td className={style.actions}>
 							<button onClick={() => handleEdit(product)}>ویرایش</button>
-							<button onClick={() => handleDelete(product.id)}>حذف</button>
+							<button onClick={() => handleDelete(product.id, product.name)}>حذف</button>
 						</td>
 					</tr>
 				)

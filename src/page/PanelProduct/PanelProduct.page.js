@@ -12,6 +12,7 @@ import {AddModal} from "./components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {EditModal} from "./components";
+import {DeleteModal} from "./components";
 
 toast.configure();
 let productsCount;
@@ -24,6 +25,9 @@ const PanelProduct = () => {
 	const [editModalOpen, setEditModalOpen] = React.useState(false);
 	const handleEditModalOpen = () => setEditModalOpen(true);
 	const handleEditModalClose = () => setEditModalOpen(false);
+	const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+	const handleDeleteModalOpen = () => setDeleteModalOpen(true);
+	const handleDeleteModalClose = () => setDeleteModalOpen(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
 		postsPerPage: 6,
@@ -33,6 +37,10 @@ const PanelProduct = () => {
 	});
 	const [refresh, setRefresh] = React.useState(false);
 	const [editedProduct, setEditedProduct] = React.useState({});
+	const [deletedProduct, setDeletedProduct] = React.useState({
+		id: 0,
+		name: '',
+	});
 	
 	const filtered_Products = useSelector((state) => state.allProducts.products);
 	const categories = useSelector((state) => state.allCategories.categories);
@@ -88,6 +96,10 @@ const PanelProduct = () => {
 		setEditedProduct(product);
 		handleEditModalOpen();
 	};
+	const handleProductDelete = (id, name) => {
+		setDeletedProduct({...deletedProduct, id, name});
+		handleDeleteModalOpen();
+	};
 	
 	return (
 		<div className={style.wrapper}>
@@ -98,19 +110,22 @@ const PanelProduct = () => {
 			</div>
 			
 			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
-				refresh={handleRefresh} toast={notify} openEditModal={handleProductEdit} prevPage={prevPage}/>
+			               openEditModal={handleProductEdit} openDeleteModal={handleProductDelete}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
-			            nextPage={nextPage}
-			            prevPage={prevPage}/>
+			            nextPage={nextPage} prevPage={prevPage}/>
 			
 			{addModalOpen && <AddModal open={addModalOpen} close={handleAddModalClose} categories={categories}
-			                   refresh={handleRefresh} toast={notify}/>}
+			                           refresh={handleRefresh} toast={notify}/>}
 			
 			{editModalOpen && <EditModal targetProduct={editedProduct} open={editModalOpen} toast={notify}
 			                             close={handleEditModalClose} refresh={handleRefresh}/>}
 			
-			<ToastContainer newestOnTop={false} rtl pauseOnFocusLoss />
+			{deleteModalOpen && <DeleteModal products={filtered_Products} targetProduct={deletedProduct}
+			                                 open={deleteModalOpen} close={handleDeleteModalClose}
+			                                 refresh={handleRefresh} toast={notify} prevPage={prevPage}/>}
+			
+			<ToastContainer newestOnTop={true} rtl pauseOnFocusLoss />
 		</div>
 	);
 };
