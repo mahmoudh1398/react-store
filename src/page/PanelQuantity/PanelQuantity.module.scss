@@ -12,3 +12,45 @@
     font-weight: bold;
   }
 }
+
+.quantityTable {
+  border-collapse: collapse;
+  width: 100%;
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: right;
+    padding: 8px;
+  }
+
+  thead tr {
+    background-color: #004D40;
+    color: #fff;
+    th {
+      text-align: center;
+    }
+  }
+
+  th:nth-child(1), td:nth-child(1) {
+    width: 70%;
+  }
+
+  th:nth-child(2), td:nth-child(2) {
+    width: 15%;
+  }
+
+  th:nth-child(3), td:nth-child(3){
+    width: 15%;
+  }
+}
+
+.submitBtn {
+  background-color: #FFB74D !important;
+  color: #fff !important;
+  font-family: 'iransans' !important;
+  font-size: 1.2rem !important;
+
+  &:hover {
+    background-color: #FFE0B2 !important;
+  }
+}

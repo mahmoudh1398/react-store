@@ -1,0 +1,1 @@
+export {QuantitiesTable} from './Table/QuantitiesTable.component';

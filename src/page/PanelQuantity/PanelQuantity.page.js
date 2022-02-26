@@ -1,113 +1,136 @@
 import style from './PanelQuantity.module.scss';
 import * as React from "react";
 import {Pagination} from "components/Pagination/Pagination.component";
-import PropTypes from "prop-types";
-import clsx from 'clsx';
-import { useButton } from '@mui/base/ButtonUnstyled';
-import { styled } from '@mui/system';
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {getProducts} from "api/products.api";
 import {setProducts} from "redux/action/productAction";
-import {QuantitiesTable} from "./QuantitiesTable.component";
-import http from "services/http.service";
-import {BASE_URL} from "config/variables.config";
+import {PriceCount} from "api/price-count.api";
+import {InputCount, InputPrice} from "components";
+import Button from "@mui/material/Button";
 
 let productsCount;
 
 const PanelQuantity = () => {
 	
-	async function getProductsCount() {
-		const response = await http.get(BASE_URL + '/products');
-		return response.data;
-	};
-	getProductsCount().then(response => productsCount = response.length);
-	
+	const [disable, setDisable] = React.useState(true);
 	const products = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
-	
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
-		postsPerPage: 5
+		postsPerPage: 6
 	});
+	const [refresh, setRefresh] = useState(false);
+	const [closeInput, setCloseInput] = useState(false);
+	
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
 	
 	useEffect(() => {
-		getProducts(pagination.currentPage).then((data) => dispatch(setProducts(data)));
+		getProducts(pagination.currentPage).then((response) => {
+			productsCount = +response[1];
+			dispatch(setProducts(response[0]))});
 	}, [pagination.currentPage]);
 	
-	const teal = {
-		500: '#009688',
-		600: '#00897B',
-		700: '#00796B',
+	const handleRefresh = () => {setRefresh(!refresh);};
+	
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const form = new FormData(e.target);
+		const data = Object.fromEntries(form);
+		// console.log(data);
+		const count = [];
+		const price = [];
+		
+		for (const key in data) {
+			if (data[key]) {
+				if (key.split("_")[0] === "price") {
+					const obj = {
+						[key.split("_")[0]]: data[key],
+						id: key.split("_")[1],
+					};
+					price.push(obj);
+				}
+			}
+		}
+		
+		for (const key in data) {
+			if (data[key]) {
+				if (key.split("_")[0] === "count") {
+					const obj = {
+						[key.split("_")[0]]: data[key],
+						id: key.split("_")[1],
+					};
+					count.push(obj);
+				}
+			}
+		}
+		
+		console.log(price);
+		console.log(count);
+		price.forEach((item) => {
+			// console.log(item);
+			PriceCount(item.id, { price: item.price });
+		});
+		count.forEach((item) => {
+			// console.log(item);
+			PriceCount(item.id, { count: item.count });
+		});
+		setCloseInput(!closeInput);
+		setRefresh(!refresh);
+		// handleRefresh();
 	};
 	
-	const CustomButtonRoot = styled('button')`
-	  background-color: ${teal[500]};
-	  border-radius: 3px;
-	  color: #FFFAFA;
-	  transition: all 150ms ease;
-	  cursor: pointer;
-	  border: none;
-     text-align: center;
-     width: 100px;
-
-	  &:hover {
-	    background-color: ${teal[600]};
-	  }
-	
-	  &.active {
-	    background-color: ${teal[700]};
-	  }
-	
-	  &.focusVisible {
-	    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
-	    outline: none;
-	  }
-	
-	  &.disabled {
-	    opacity: 0.5;
-	    cursor: not-allowed;
-	  }
-`;
-	
-	const CustomButton = React.forwardRef(function CustomButton(props, ref) {
-		const { children } = props;
-		const { active, disabled, focusVisible, getRootProps } = useButton({
-			...props,
-			ref,
-			component: CustomButtonRoot,
-		});
-		
-		const classes = {
-			active,
-			disabled,
-			focusVisible,
-		};
-		
-		return (
-			<CustomButtonRoot {...getRootProps()} className={clsx(classes)}>
-				{children}
-			</CustomButtonRoot>
-		);
-	});
-	
-	CustomButton.propTypes = {
-		children: PropTypes.node,
+	const handleSubmitBtn = (className) => {
+		if (className === false) {
+			setDisable(className);
+		} else {
+			setDisable(true);
+		}
 	};
 	
 	return (
 		<div className={style.wrapper}>
-
-			<div className={style.main_header}>
-				<h3>مدیریت موجودی و قیمت ها</h3>
-				<CustomButton disabled>ذخیره</CustomButton>
-			</div>
-			
-			<QuantitiesTable quantities={products}/>
-
+			<form onSubmit={handleSubmit}>
+				<div className={style.main_header}>
+					<h3>مدیریت موجودی و قیمت ها</h3>
+					<Button variant="contained" disabled={disable} type="submit" className={style.submitBtn}>
+						ذخیره
+					</Button>
+				</div>
+				<table className={style.quantityTable}>
+					<thead>
+						<tr>
+							<th>کالا</th>
+							<th>موجودی</th>
+							<th>قیمت</th>
+						</tr>
+					</thead>
+					<tbody>
+						{products.map( (product) =>
+							<tr key={product.id}>
+								<td>{product.name}</td>
+								<InputCount
+									placeholder={product.count}
+									value={product.count}
+									name={product.id}
+									func={closeInput}
+									disableSubmitBtn={handleSubmitBtn}
+								/>
+								<InputPrice
+									placeholder={product.price}
+									value={product.price}
+									name={product.id}
+									func={closeInput}
+									disableSubmitBtn={handleSubmitBtn}
+								/>
+							</tr>
+						)}
+					</tbody>
+				</table>
+				{/*<QuantitiesTable quantities={products} refresh={handleRefresh}/>*/}
+			</form>
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>

@@ -13,6 +13,8 @@ import { uploadImg } from 'api/products.api';
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import {createTheme, ThemeProvider, responsiveFontSizes} from "@mui/material/styles";
+import {CKEditor} from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
 const style = {
@@ -364,8 +366,8 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 								mb: 2,
 							}}
 						/>
-						<Box  sx={{ display: 'flex', justifyContent: 'space-between'}}>
-						</Box>
+						{/*<Box  sx={{ display: 'flex', justifyContent: 'space-between'}}>*/}
+						{/*</Box>*/}
 						<TextField
 							margin="normal"
 							required

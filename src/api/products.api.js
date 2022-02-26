@@ -3,8 +3,8 @@ import {UPLOAD_IMG, PRODUCTS} from 'config/url.config';
 
 export const getProducts = async (currentPage) => {
   try {
-    const response = await http.get(`/products?_page=${currentPage}&_limit=5`);
-    return response.data;
+    const response = await http.get(`/products?_page=${currentPage}&_limit=6`);
+    return [response.data, response.headers["x-total-count"]];
   } catch (e) {
     return Promise.reject(e);
   }
@@ -12,7 +12,7 @@ export const getProducts = async (currentPage) => {
 
 export const getFilteredProducts = async (currentPage, category) => {
   try {
-    const response = await http.get(`/products?_page=${currentPage}&_limit=5&category.name=${category}`);
+    const response = await http.get(`/products?_page=${currentPage}&_limit=6&category.name=${category}`);
     return [response.data, response.headers["x-total-count"]];
   } catch (e) {
     return Promise.reject(e);

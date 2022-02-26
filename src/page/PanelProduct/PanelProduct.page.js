@@ -16,7 +16,8 @@ import {EditModal} from "./components";
 toast.configure();
 let productsCount;
 
-function PanelProduct() {
+const PanelProduct = () => {
+	
 	const [addModalOpen, setAddModalOpen] = React.useState(false);
 	const handleAddModalOpen = () => setAddModalOpen(true);
 	const handleAddModalClose = () => setAddModalOpen(false);
@@ -25,7 +26,7 @@ function PanelProduct() {
 	const handleEditModalClose = () => setEditModalOpen(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
-		postsPerPage: 5,
+		postsPerPage: 6,
 	});
 	const [category, setCategory] = React.useState({
 		category: 'لپتاپ',
@@ -105,9 +106,10 @@ function PanelProduct() {
 			
 			{addModalOpen && <AddModal open={addModalOpen} close={handleAddModalClose} categories={categories}
 			                   refresh={handleRefresh} toast={notify}/>}
+			
 			{editModalOpen && <EditModal targetProduct={editedProduct} open={editModalOpen} toast={notify}
-			                             close={handleEditModalClose}
-			                             refresh={handleRefresh}/>}
+			                             close={handleEditModalClose} refresh={handleRefresh}/>}
+			
 			<ToastContainer newestOnTop={false} rtl pauseOnFocusLoss />
 		</div>
 	);

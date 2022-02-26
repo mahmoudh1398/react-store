@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getOrders} from "api/orders.api";
 import {setOrders} from "redux/action/ordersAction";
-import {OrdersTable} from "./OrdersTabel.component";
+import {OrdersTable} from "./components";
 
 
 let ordersCount;
@@ -14,7 +14,7 @@ const PanelOrders = () => {
 	const [radio, setRadio] = useState(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
-		postsPerPage: 5
+		postsPerPage: 6
 	});
 	const orders = useSelector((state) => state.allOrders.orders);
 	const dispatch = useDispatch();
