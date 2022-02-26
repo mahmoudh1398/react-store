@@ -40,16 +40,16 @@ theme = responsiveFontSizes(theme);
 
 const signInSchema = Yup.object().shape({
 	name: Yup.string().required('پر کردن این فیلد اجباری است'),
-	price: Yup.number().required('پر کردن این فیلد اجباری است'),
-	count: Yup.number().required('پر کردن این فیلد اجباری است'),
+	// price: Yup.number().required('پر کردن این فیلد اجباری است'),
+	// count: Yup.number().required('پر کردن این فیلد اجباری است'),
 });
 
 const initialValues = {
 	image: [],
 	thumbnail: [],
 	name: '',
-	price: 0,
-	count: 0,
+	// price: 0,
+	// count: 0,
 	category: '',
 	description: '',
 };
@@ -134,6 +134,12 @@ function AddModal({open, close, categories, refresh, toast}) {
 					id: 2,
 					name: 'گوشی',
 				});
+				break;
+			case 'هدفون':
+				setCategory({
+					id: 3,
+					name: 'هدفون'
+				})
 				break;
 			default:
 				break;
@@ -237,25 +243,25 @@ function AddModal({open, close, categories, refresh, toast}) {
 											<ErrorMessage name="name" component="span" className={styles.error}/>
 										</div>
 										
-										<div>
-											<label htmlFor="name">قیمت کالا:</label>
-											<Field
-												type="number"
-												name="price"
-												id="price"
-											/>
-											<ErrorMessage name="price" component="span" className={styles.error}/>
-										</div>
+										{/*<div>*/}
+										{/*	<label htmlFor="name">قیمت کالا:</label>*/}
+										{/*	<Field*/}
+										{/*		type="number"*/}
+										{/*		name="price"*/}
+										{/*		id="price"*/}
+										{/*	/>*/}
+										{/*	<ErrorMessage name="price" component="span" className={styles.error}/>*/}
+										{/*</div>*/}
 										
-										<div>
-											<label htmlFor="name">تعداد کالا:</label>
-											<Field
-												type="number"
-												name="count"
-												id="count"
-											/>
-											<ErrorMessage name="count" component="span" className={styles.error}/>
-										</div>
+										{/*<div>*/}
+										{/*	<label htmlFor="name">تعداد کالا:</label>*/}
+										{/*	<Field*/}
+										{/*		type="number"*/}
+										{/*		name="count"*/}
+										{/*		id="count"*/}
+										{/*	/>*/}
+										{/*	<ErrorMessage name="count" component="span" className={styles.error}/>*/}
+										{/*</div>*/}
 										
 										<div>
 											<label htmlFor="category">دسته بندی:</label>

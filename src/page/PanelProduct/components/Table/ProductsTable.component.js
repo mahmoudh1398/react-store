@@ -4,7 +4,7 @@ import * as React from "react";
 import http from "services/http.service";
 
 
-const ProductsTable = ({products, changeCategory, categories, refresh, toast, openEditModal}) => {
+const ProductsTable = ({products, changeCategory, categories, refresh, toast, openEditModal, prevPage}) => {
 	
 	function handleCategory(e) {
 		changeCategory(e.target.value);
@@ -21,6 +21,9 @@ const ProductsTable = ({products, changeCategory, categories, refresh, toast, op
 				.then((res) => {
 					console.log(res);
 					if (res.status === 200) {
+						if (products.length-1 === 0 || products.length-1 <= 0) {
+							prevPage();
+						}
 						refresh();
 						toast('کالا با موفقیت حذف شد', 'success');
 					}

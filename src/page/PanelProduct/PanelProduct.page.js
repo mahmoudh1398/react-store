@@ -29,7 +29,7 @@ const PanelProduct = () => {
 		postsPerPage: 6,
 	});
 	const [category, setCategory] = React.useState({
-		category: 'لپتاپ',
+		category: 'لپتاپ'
 	});
 	const [refresh, setRefresh] = React.useState(false);
 	const [editedProduct, setEditedProduct] = React.useState({});
@@ -98,7 +98,7 @@ const PanelProduct = () => {
 			</div>
 			
 			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
-				refresh={handleRefresh} toast={notify} openEditModal={handleProductEdit}/>
+				refresh={handleRefresh} toast={notify} openEditModal={handleProductEdit} prevPage={prevPage}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
