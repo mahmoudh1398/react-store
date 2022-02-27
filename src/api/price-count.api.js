@@ -2,12 +2,9 @@ import http from "services/http.service";
 
 export const PriceCount = async (id, data) => {
    try {
-      http.patch(`/products/${id}`, data).then(
-         res=>{
-            console.log(res);
-         }
-      )
-   } catch (error) {
-      console.log(error);
+      const response = await http.patch(`/products/${id}`, data)
+      return response;
+   } catch (e) {
+      return Promise.reject(e);
    }
 };

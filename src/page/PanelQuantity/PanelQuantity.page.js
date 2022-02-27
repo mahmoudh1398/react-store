@@ -8,38 +8,66 @@ import {setProducts} from "redux/action/productAction";
 import {PriceCount} from "api/price-count.api";
 import {InputCount, InputPrice} from "components";
 import Button from "@mui/material/Button";
+import {toast, ToastContainer} from "react-toastify";
 
 let productsCount;
+toast.configure();
 
 const PanelQuantity = () => {
 	
-	const [disable, setDisable] = React.useState(true);
 	const products = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
+	const [reRender, setReRender] = useState(false);
+	const [disable, setDisable] = React.useState(true);
+	const [closeInput, setCloseInput] = useState(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
 		postsPerPage: 6
 	});
-	const [refresh, setRefresh] = useState(false);
-	const [closeInput, setCloseInput] = useState(false);
 	
-	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
-	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
-	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
+	const notify = (message, type) => {
+		if (type === 'success') {
+			toast.success(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} else if (type === 'error') {
+			toast.error(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+	};
+	
+	useEffect(() => {
+		setCloseInput(false);
+	}, [reRender]);
 	
 	useEffect(() => {
 		getProducts(pagination.currentPage).then((response) => {
 			productsCount = +response[1];
 			dispatch(setProducts(response[0]))});
-	}, [pagination.currentPage]);
+	}, [pagination.currentPage, reRender]);
 	
-	const handleRefresh = () => {setRefresh(!refresh);};
+	
+	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
+	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
+	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const form = new FormData(e.target);
 		const data = Object.fromEntries(form);
-		// console.log(data);
 		const count = [];
 		const price = [];
 		
@@ -67,24 +95,32 @@ const PanelQuantity = () => {
 			}
 		}
 		
-		console.log(price);
-		console.log(count);
 		price.forEach((item) => {
-			// console.log(item);
-			PriceCount(item.id, { price: item.price });
+			PriceCount(item.id, { price: item.price }).then((response) => {
+				if (response.status === 200) {
+					notify('ویرایش با موفقیت انجام شد', 'success');
+				} else {
+					notify('ویرایش با موفقیت انجام نشد', 'error');
+				}
+			});
 		});
 		count.forEach((item) => {
-			// console.log(item);
-			PriceCount(item.id, { count: item.count });
+			PriceCount(item.id, { count: item.count }).then((response) => {
+				if (response.status === 200) {
+					notify('ویرایش با موفقیت انجام شد', 'success');
+				} else {
+					notify('ویرایش با موفقیت انجام نشد', 'error');
+				}
+			});
 		});
-		setCloseInput(!closeInput);
-		setRefresh(!refresh);
-		// handleRefresh();
+		
+		setCloseInput(true);
+		handleSubmitBtn(true);
+		setReRender(!reRender);
 	};
-	
 	const handleSubmitBtn = (className) => {
 		if (className === false) {
-			setDisable(className);
+			setDisable(false);
 		} else {
 			setDisable(true);
 		}
@@ -129,11 +165,13 @@ const PanelQuantity = () => {
 						)}
 					</tbody>
 				</table>
-				{/*<QuantitiesTable quantities={products} refresh={handleRefresh}/>*/}
+				{/*<QuantitiesTable quantities={products} reRender={handleRefresh}/>*/}
 			</form>
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
+			
+			<ToastContainer newestOnTop={true} rtl pauseOnFocusLoss />
 
 		</div>
 	);

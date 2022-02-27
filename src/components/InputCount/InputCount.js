@@ -1,7 +1,13 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 const InputCount = (props) => {
-  const [value, setValue] = useState(false);
+  const [value, setValue] = useState( false);
+  useEffect(() => {
+     if (props.func) {
+        setValue(false);
+     }
+  }, [props.func]);
+  
   return (
     <td onClick={() => {
       props.disableSubmitBtn(false);
@@ -23,5 +29,4 @@ const InputCount = (props) => {
     </td>
   );
 };
-
 export { InputCount };

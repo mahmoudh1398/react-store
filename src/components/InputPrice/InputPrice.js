@@ -1,7 +1,15 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 const InputPrice = (props) => {
+  
   const [value, setValue] = useState(false);
+   
+   useEffect(() => {
+      if (props.func) {
+         setValue(false);
+      }
+   }, [props.func]);
+  
   return (
     <td onClick={() => {
       props.disableSubmitBtn(false);
