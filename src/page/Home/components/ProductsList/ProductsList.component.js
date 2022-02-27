@@ -25,10 +25,10 @@ const ProductsList = ({ category }) => {
 	return (
 		<Box sx={products_box} key={category.id}>
 			<Link to={`/products?page=1&id=${category.id}`} className={style.myLink}>
-				<div className={style.category_link}>{category && category.name}</div>
+				<div className={style.category_link}>{category && products.length !==0 && category.name}</div>
 			</Link>
 			<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-				{products && products.map( product => (
+				{products && products.length !==0 && products.map( product => (
 					<Grid item xs={2} sm={4} md={4} key={product.id}>
 						<ProductItem productItem={product}/>
 					</Grid>
