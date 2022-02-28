@@ -6,10 +6,6 @@ import {useEffect} from "react";
 import {getCategories} from "../../api/categories.api";
 import {setCategories} from "../../redux/action/categoriesAction";
 
-const category_box = {
-   width: 1,
-   margin: '2rem auto',
-};
 
 const Home = () => {
    
@@ -24,9 +20,7 @@ const Home = () => {
   return (
      <div className={styles.wrapper}>
         {categories && categories.map((category) => (
-           <Box key={category.id} sx={category_box}>
-              <ProductsList category={category}/>
-           </Box>
+           <ProductsList category={category}/>
         ))}
      </div>
   );

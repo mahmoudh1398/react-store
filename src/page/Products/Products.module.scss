@@ -1,0 +1,13 @@
+.wrapper {
+  padding: 70px 20px;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  border-left: 1px solid #e6e6e6;
+  z-index: 999;
+}

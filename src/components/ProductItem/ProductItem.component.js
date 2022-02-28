@@ -12,11 +12,12 @@ import {Link} from "react-router-dom" ;
 
 const ProductItem = ({productItem}) => {
 	return (
-		<Link to={`${PATHS.PRODUCT}/${productItem.id}`}>
+		<Link to={`${PATHS.PRODUCT}/${productItem.id}`} className={style.card_link}>
 			<Card
 				sx={{
 					backgroundColor: "primary",
-					maxWidth: 345,
+					width: 340,
+					height: 240,
 					'&:hover': {
 						boxShadow: '0 5px 5px rgba(182, 182, 182, 0.75)'
 					}
