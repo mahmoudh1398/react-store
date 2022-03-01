@@ -1,5 +1,4 @@
 import styles from './Home.module.scss';
-import Box from '@mui/material/Box';
 import {ProductsList} from "./components";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
@@ -20,7 +19,7 @@ const Home = () => {
   return (
      <div className={styles.wrapper}>
         {categories && categories.map((category) => (
-           <ProductsList category={category}/>
+           <ProductsList category={category} key={category.id}/>
         ))}
      </div>
   );

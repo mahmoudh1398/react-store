@@ -1,16 +1,14 @@
 import { ActionTypes } from "redux/action/productAction";
 
 const initialState = {
-  products: [],
+	product: {},
 };
 
 export const productReducer = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case ActionTypes.SET_PRODUCTS:
-      return {...state,products:payload}
-    case ActionTypes.FILTERED_PRODUCTS:
-      return {...state,products:payload}
-    default:
-      return state;
-  }
+	switch (type) {
+		case ActionTypes.SET_PRODUCT:
+			return {...state, product:payload}
+		default:
+			return state;
+	}
 };

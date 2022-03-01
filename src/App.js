@@ -3,6 +3,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
+import {createTheme, ThemeProvider, responsiveFontSizes} from "@mui/material/styles";
 
 // Create rtl cache
 const cacheRtl = createCache({
@@ -10,8 +11,22 @@ const cacheRtl = createCache({
    stylisPlugins: [prefixer, rtlPlugin],
 });
 
-function App(props) {
-   return <CacheProvider value={cacheRtl}><AppRoute /></CacheProvider>;
+let theme = createTheme({
+   typography: {
+      fontFamily: 'iransans',
+   },
+   direction: 'rtl'
+});
+theme = responsiveFontSizes(theme);
+
+function App() {
+   return (
+      <ThemeProvider theme={theme}>
+         <CacheProvider value={cacheRtl}>
+            <AppRoute />
+         </CacheProvider>
+      </ThemeProvider>
+   );
 }
 
 export {App};

@@ -4,7 +4,7 @@ import {Pagination} from "components/Pagination/Pagination.component";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getProducts} from "api/products.api";
-import {setProducts} from "redux/action/productAction";
+import {setProducts} from "redux/action/productsAction";
 import {PriceCount} from "api/price-count.api";
 import {InputCount, InputPrice} from "components";
 import Button from "@mui/material/Button";

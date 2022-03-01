@@ -2,12 +2,24 @@
   padding: 70px 20px;
 }
 
-.sidebar {
-  width: 250px;
-  height: 100%;
-  position: fixed;
-  top: 50px;
-  right: 0;
-  border-left: 1px solid #e6e6e6;
-  z-index: 999;
+.category_link {
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  background-color: #004D40;
+  border-radius: 5px;
+  width: 90%;
+  margin: 10px auto;
+}
+
+.products {
+  margin: 10px auto !important;
+  width: 90% !important;
+}
+
+.products_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }

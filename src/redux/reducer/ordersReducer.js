@@ -4,7 +4,7 @@ const initialState = {
   orders: [],
 };
 
-export const orderReducer = (state = initialState, { type, payload }) => {
+export const ordersReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.SET_ORDERS:
       return { ...state, orders: payload };

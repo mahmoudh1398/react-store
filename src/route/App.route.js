@@ -12,7 +12,7 @@ function AppRoute() {
 				<Route path={PATHS.CHECKOUT} element={<PublicRoute component={(props) => <Page.Checkout {...props} />} />} />
 				<Route path={PATHS.FAIL_PAYMENT} element={<PublicRoute component={(props) => <Page.FailPayment {...props} />} />} />
 				<Route path={PATHS.HOME} element={<PublicRoute component={(props) => <Page.Home {...props} />} />}>
-					<Route path=":homeid" element={<PublicRoute component={(props) => <Page.Product {...props} />} />} />
+					{/*<Route path=":homeid" element={<PublicRoute component={(props) => <Page.Product {...props} />} />} />*/}
 				</Route>
 				<Route path={PATHS.NOT_FOUND} element={<PublicRoute component={(props) =><Page.NotFound {...props} />} />}/>
 				<Route path={PATHS.PANEL_LOGIN} element={<ProtectedRoute component={(props) => <Page.PanelLogin {...props} />} />} />

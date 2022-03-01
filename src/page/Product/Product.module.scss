@@ -1,0 +1,55 @@
+.wrapper {
+  padding: 70px 20px;
+}
+
+.intro {
+  display: flex;
+}
+
+.figureWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+}
+
+.specification {
+  margin-right: 20px;
+  word-break: break-word;
+  width: 70%;
+}
+
+.category_link {
+  color: #000;
+  font-size: 14px;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.add_to_cart {
+  background-color: #004D40;
+  color: #fff;
+  margin-right: 20px;
+  border-radius: 5px;
+  width: 200px;
+  height: 30px;
+
+  &:hover {
+    background-color: #00695C;
+  }
+}
+
+.description {
+  padding: 20px;
+}

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import {createTheme, ThemeProvider, responsiveFontSizes} from "@mui/material/styles";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import * as Yup from "yup";
@@ -30,13 +29,6 @@ const style = {
 	boxShadow: 24,
 	p: 4,
 };
-let theme = createTheme({
-	typography: {
-		fontFamily: 'iransans',
-	},
-	direction: 'rtl'
-});
-theme = responsiveFontSizes(theme);
 
 const signInSchema = Yup.object().shape({
 	name: Yup.string().required('پر کردن این فیلد اجباری است'),
@@ -173,130 +165,108 @@ function AddModal({open, close, categories, refresh, toast}) {
 	
 	
 	return (
-		<ThemeProvider theme={theme}>
-			<div>
-				<Modal
-					open={open}
-					// onClose={close}
-				>
-					<Box sx={style}>
-						<IconButton
-							aria-label="close"
-							onClick={close}
-							sx={{
-								position: 'absolute',
-								right: 8,
-								top: 8,
-								color: (theme) => theme.palette.grey[500],
-							}}
-						>
-							<CloseIcon />
-						</IconButton>
-						<Typography variant="h6" component="h2">
-							افزودن / ویرایش کالا
-						</Typography>
-						<Formik
-							initialValues={initialValues}
-							validationSchema={signInSchema}
-							onSubmit={(values) => {
-								handleSubmit(values);
-							}}
-						>
-							{(formik) => {
-								const { isValid, dirty } = formik;
-								return (
-									<Form className={styles.product_modal}>
-										<div>
-											<label htmlFor="image">تصاویر کالا:</label>
-											<input
-												type="file"
-												name="image"
-												id="image"
-												multiple
-												onChange={handleImagesSelect}
-											/>
-											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleImagesUpload}>
-												آپلود تصاویر
-											</Button>
-										</div>
-										
-										<div>
-											<label htmlFor="thumbnail">تصویر بند انگشتی کالا:</label>
-											<input
-												type="file"
-												name="thumbnail"
-												id="thumbnail"
-												onChange={handleThumbnailSelect}
-											/>
-											<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleThumbnailUpload}>
-												آپلود تصویر
-											</Button>
-										</div>
-										
-										<div>
-											<label htmlFor="name">نام کالا:</label>
-											<Field
-												type="text"
-												name="name"
-												id="name"
-											/>
-											<ErrorMessage name="name" component="span" className={styles.error}/>
-										</div>
-										
-										{/*<div>*/}
-										{/*	<label htmlFor="name">قیمت کالا:</label>*/}
-										{/*	<Field*/}
-										{/*		type="number"*/}
-										{/*		name="price"*/}
-										{/*		id="price"*/}
-										{/*	/>*/}
-										{/*	<ErrorMessage name="price" component="span" className={styles.error}/>*/}
-										{/*</div>*/}
-										
-										{/*<div>*/}
-										{/*	<label htmlFor="name">تعداد کالا:</label>*/}
-										{/*	<Field*/}
-										{/*		type="number"*/}
-										{/*		name="count"*/}
-										{/*		id="count"*/}
-										{/*	/>*/}
-										{/*	<ErrorMessage name="count" component="span" className={styles.error}/>*/}
-										{/*</div>*/}
-										
-										<div>
-											<label htmlFor="category">دسته بندی:</label>
-											<Field as="select" name="category" id="category"
-											       onChange={handleCategory} value={category.name}>
-												{categories.map((category) => (
-													<option key={category.id} value={category.name}>{category.name}</option>
-												))}
-											</Field>
-											<ErrorMessage name="category" component="span" className={styles.error}/>
-										</div>
-										
-										<div>
-											<label htmlFor="description">توضیحات:</label>
-											<CKEditor
-												editor={ClassicEditor}
-												onChange={handleCKEditorState}
-											/>
-										</div>
-										
-										<button
-											type="submit"
-											className={!(dirty && isValid) ? styles.disabled_btn : null}
-											disabled={!(dirty && isValid)}
-										>
-											ذخیره
-										</button>
-									</Form>
-								);
-							}}
-						</Formik>
-					</Box>
-				</Modal>
-			</div>
-		</ThemeProvider>
+		<div>
+			<Modal
+				open={open}
+				// onClose={close}
+			>
+				<Box sx={style}>
+					<IconButton
+						aria-label="close"
+						onClick={close}
+						sx={{
+							position: 'absolute',
+							right: 8,
+							top: 8,
+							color: (theme) => theme.palette.grey[500],
+						}}
+					>
+						<CloseIcon />
+					</IconButton>
+					<Typography variant="h6" component="h2">
+						افزودن / ویرایش کالا
+					</Typography>
+					<Formik
+						initialValues={initialValues}
+						validationSchema={signInSchema}
+						onSubmit={(values) => {
+							handleSubmit(values);
+						}}
+					>
+						{(formik) => {
+							const { isValid, dirty } = formik;
+							return (
+								<Form className={styles.product_modal}>
+									<div>
+										<label htmlFor="image">تصاویر کالا:</label>
+										<input
+											type="file"
+											name="image"
+											id="image"
+											multiple
+											onChange={handleImagesSelect}
+										/>
+										<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleImagesUpload}>
+											آپلود تصاویر
+										</Button>
+									</div>
+									
+									<div>
+										<label htmlFor="thumbnail">تصویر بند انگشتی کالا:</label>
+										<input
+											type="file"
+											name="thumbnail"
+											id="thumbnail"
+											onChange={handleThumbnailSelect}
+										/>
+										<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleThumbnailUpload}>
+											آپلود تصویر
+										</Button>
+									</div>
+									
+									<div>
+										<label htmlFor="name">نام کالا:</label>
+										<Field
+											type="text"
+											name="name"
+											id="name"
+										/>
+										<ErrorMessage name="name" component="span" className={styles.error}/>
+									</div>
+									
+									<div>
+										<label htmlFor="category">دسته بندی:</label>
+										<Field as="select" name="category" id="category"
+										       onChange={handleCategory} value={category.name}>
+											{categories.map((category) => (
+												<option key={category.id} value={category.name}>{category.name}</option>
+											))}
+										</Field>
+										<ErrorMessage name="category" component="span" className={styles.error}/>
+									</div>
+									
+									<div>
+										<label htmlFor="description">توضیحات:</label>
+										<CKEditor
+											editor={ClassicEditor}
+											onChange={handleCKEditorState}
+										/>
+									</div>
+									
+									<button
+										type="submit"
+										className={!(dirty && isValid) ? styles.disabled_btn : null}
+										disabled={!(dirty && isValid)}
+									>
+										ذخیره
+									</button>
+								</Form>
+							);
+						}}
+					</Formik>
+				</Box>
+			</Modal>
+		</div>
 	);
 }
 

@@ -3,7 +3,7 @@ import * as React from "react";
 import {Pagination} from "components";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from "react";
-import {filteredProducts} from "redux/action/productAction";
+import {filteredProducts} from "redux/action/productsAction";
 import {getFilteredProducts} from "api/products.api";
 import {ProductsTable} from './components';
 import {getCategories} from "api/categories.api";

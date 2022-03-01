@@ -1,0 +1,10 @@
+.sidebar {
+  width: 20%;
+  height: 100%;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  border-left: 1px solid #e6e6e6;
+  z-index: 999;
+  //overflow-y: scroll;
+}
