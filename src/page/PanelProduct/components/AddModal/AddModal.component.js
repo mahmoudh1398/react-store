@@ -32,16 +32,12 @@ const style = {
 
 const signInSchema = Yup.object().shape({
 	name: Yup.string().required('پر کردن این فیلد اجباری است'),
-	// price: Yup.number().required('پر کردن این فیلد اجباری است'),
-	// count: Yup.number().required('پر کردن این فیلد اجباری است'),
 });
 
 const initialValues = {
 	image: [],
 	thumbnail: [],
 	name: '',
-	// price: 0,
-	// count: 0,
 	category: '',
 	description: '',
 };
@@ -249,6 +245,8 @@ function AddModal({open, close, categories, refresh, toast}) {
 										<label htmlFor="description">توضیحات:</label>
 										<CKEditor
 											editor={ClassicEditor}
+											name="description"
+											config={{ language : 'fa' }}
 											onChange={handleCKEditorState}
 										/>
 									</div>

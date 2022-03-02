@@ -144,7 +144,7 @@ const PanelQuantity = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{products.map( (product) =>
+						{products.length > 0 ? products.map( (product) =>
 							<tr key={product.id}>
 								<td>{product.name}</td>
 								<InputCount
@@ -162,7 +162,8 @@ const PanelQuantity = () => {
 									disableSubmitBtn={handleSubmitBtn}
 								/>
 							</tr>
-						)}
+						): <tr><td colSpan={4}>هیچ محصولی برای نمایش وجود ندارد</td></tr>
+						}
 					</tbody>
 				</table>
 				{/*<QuantitiesTable quantities={products} reRender={handleRefresh}/>*/}

@@ -2,10 +2,10 @@ const ActionTypes = {
 	SET_PRODUCT: "SET_PRODUCT",
 };
 
-const setProduct = (product) => {
+const setProduct = (data) => {
 	return {
 		type: ActionTypes.SET_PRODUCT,
-		payload: product,
+		payload: data,
 	};
 };
 

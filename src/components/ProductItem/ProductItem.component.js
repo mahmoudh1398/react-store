@@ -12,7 +12,7 @@ import {Link} from "react-router-dom" ;
 
 const ProductItem = ({productItem}) => {
 	return (
-		<Link to={`${PATHS.PRODUCT}?id=${productItem.id}`} className={style.card_link}>
+		<Link to={`${PATHS.PRODUCT}/${productItem.id}`} className={style.card_link}>
 			<Card
 				sx={{
 					backgroundColor: "primary",

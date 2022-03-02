@@ -40,7 +40,7 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 	const [imageIds , setImageIds] = React.useState(targetProduct.image);
 	const [thumbnail , setThumbnail] = React.useState(targetProduct.thumbnail);
 	const [id , setId] = React.useState(targetProduct.id);
-
+	
 	const handleImagesUpload = (e) => {
 		e.preventDefault();
 		let data = new FormData();
@@ -82,9 +82,10 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 			setPrice(target.value);
 		}if(target.name === 'count'){
 			setCount(target.value);
-		}if(target.name === 'description'){
-			setDescription(target.value);
 		}
+		// if(target.name === 'description'){
+		// 	setDescription(target.value);
+		// }
 	};
 
 	const deleteImageHandler= ({target}) => {
@@ -93,8 +94,11 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 	const deleteThumbnailHandler= ({target}) => {
 		setThumbnail(null)
 	}
-
-
+	
+	const handleCKEditorState = (event, editor) => {
+		setDescription(editor.getData());
+	};
+	
 	const handleEdit =  (e) => {
 		e.preventDefault();
 		const data = {...targetProduct};
@@ -356,23 +360,21 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 							mb: 2,
 						}}
 					/>
-					{/*<Box  sx={{ display: 'flex', justifyContent: 'space-between'}}>*/}
-					{/*</Box>*/}
-					<TextField
-						margin="normal"
-						required
-						fullWidth
-						value={description || ''}
-						onChange={handleValueChange}
-						name="description"
-						label="توضیحات"
-						id="description"
-						focused
-						sx={{
-							mb: 2,
-							mr:3,
-						}}
-					/>
+					
+					<div>
+						<label htmlFor="description">توضیحات:</label>
+						<CKEditor
+							editor={ClassicEditor}
+							name="description"
+							id="description"
+							value={description || ''}
+							config={{ language : 'fa' }}
+							onChange={handleCKEditorState}
+							onReady={(editor => {
+								editor.setData(description)
+							})}
+						/>
+					</div>
 					
 					<Button
 						type="submit"

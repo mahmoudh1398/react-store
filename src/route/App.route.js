@@ -2,7 +2,6 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {PATHS} from 'config/routes.config';
 import * as Page from 'page';
 import {ProtectedRoute, PublicRoute, PrivateRoute} from './components';
-import {Test} from "components/Test";
 
 function AppRoute() {
 	return (
@@ -20,8 +19,8 @@ function AppRoute() {
 				<Route path={PATHS.PANEL_PRODUCT} element={<PrivateRoute component={(props) => <Page.PanelProduct {...props} />} />} />
 				<Route path={PATHS.PANEL_QUANTITY} element={<PrivateRoute component={(props) => <Page.PanelQuantity {...props} />} />} />
 				<Route path={PATHS.PRODUCTS} element={<PublicRoute component={(props) => <Page.Products {...props} />} />} />
-				<Route path={PATHS.PRODUCT} element={<PublicRoute component={(props) => <Page.Product {...props} />} />}>
-					<Route path=":id" element={<PublicRoute component={(props) => <Test {...props} />} />} />
+				<Route path={`${PATHS.PRODUCT}/:id`} element={<PublicRoute component={(props) => <Page.Product {...props} />} />}>
+					{/*<Route path=":id" element={<PublicRoute component={(props) => <Test {...props} />} />} />*/}
 				</Route>
 				<Route path={PATHS.SUCCESS_PAYMENT} element={<PublicRoute component={(props) => <Page.SuccessPayment {...props} />} />} />
 			</Routes>

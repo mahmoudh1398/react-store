@@ -1,7 +1,7 @@
 import { ActionTypes } from "redux/action/productAction";
 
 const initialState = {
-	product: {},
+	product: [],
 };
 
 export const productReducer = (state = initialState, { type, payload }) => {

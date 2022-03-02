@@ -14,14 +14,15 @@ const OrdersTable = ({orders}) => {
 			</tr>
 			</thead>
 			<tbody>
-			{orders.map( Order =>
+			{orders.length > 0 ? orders.map( Order =>
 				<tr key={Order.id}>
 					<td>{Order.name}</td>
 					<td>{Order.sumAmountOfCart}</td>
 					<td>{moment(new Date(Order.orderRegistrationTime), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</td>
 					<td><button>بررسی سفارش</button></td>
 				</tr>
-			)}
+			): <tr><td colSpan={4}>هیچ سفارشی ثبت نشده است</td></tr>}
+			}
 			</tbody>
 		</table>
 	);

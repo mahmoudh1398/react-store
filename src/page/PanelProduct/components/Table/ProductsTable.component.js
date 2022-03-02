@@ -26,7 +26,7 @@ const ProductsTable = ({products, changeCategory, categories, openEditModal, ope
 				<th className={style.category}>
 					<label htmlFor="categories">دسته بندی</label>
 					<select name="category" id="categories" onChange={handleCategory}>
-						{categories.map((category) => (
+						{categories.length > 0 && categories.map((category) => (
 							<option key={category.id} value={category.name}>{category.name}</option>
 						))}
 					</select>
@@ -35,7 +35,7 @@ const ProductsTable = ({products, changeCategory, categories, openEditModal, ope
 			</tr>
 			</thead>
 			<tbody>
-			{products.map( product => (
+			{products.length > 0 ? products.map( product => (
 					<tr key={product.id}>
 						<td><img className={style.image} src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
 						<td>{product.name}</td>
@@ -45,8 +45,9 @@ const ProductsTable = ({products, changeCategory, categories, openEditModal, ope
 							<button onClick={() => handleDelete(product.id, product.name)}>حذف</button>
 						</td>
 					</tr>
-				)
-			)}
+					)
+				): <tr><td colSpan={4}>هیچ محصولی برای نمایش وجود ندارد</td></tr>
+			}
 			</tbody>
 		</table>
 	);
