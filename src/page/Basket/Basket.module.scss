@@ -1,0 +1,23 @@
+.basket_wrapper{
+  padding: 5rem 10%;
+  width: 100%;
+}
+
+.submitBtn {
+  background-color: #004D40 !important;
+  color: #fff;
+
+  &:hover {
+    background-color: #00695C !important;
+  }
+}
+
+.disabledSubmitBtn {
+  background-color: #004D40 !important;
+  color: #fff;
+  cursor: not-allowed !important;
+
+  &:hover {
+    background-color: #00695C !important;
+  }
+}
