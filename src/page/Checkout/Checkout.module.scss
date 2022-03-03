@@ -1,0 +1,24 @@
+.checkout_wrapper{
+  padding: 51px 20px;
+}
+
+.row {
+  display: flex;
+}
+
+.date {
+  width: 540px;
+  margin: 10px 25px;
+  height: 50px;
+}
+
+.submit {
+  width: 540px;
+  margin: 5rem auto !important;
+  height: 50px;
+  background-color: #004D40 !important;
+
+  &:hover {
+    background-color: #00796B !important;
+  }
+}
