@@ -24,14 +24,12 @@ function DeleteModal({products, targetProduct, open, close, refresh, toast, prev
 				.delete(`/products/${targetProduct.id}`)
 				.then((res) => {
 					console.log(res);
-					if (res.status === 200) {
-						if (products.length-1 === 0 || products.length-1 <= 0) {
-							prevPage();
-						}
-						refresh();
-						close();
-						toast('کالا با موفقیت حذف شد', 'success');
+					if (products.length-1 === 0 || products.length-1 <= 0) {
+						prevPage();
 					}
+					refresh();
+					close();
+					toast('کالا با موفقیت حذف شد', 'success');
 				});
 		} catch (e) {
 			console.log(e);

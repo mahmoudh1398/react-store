@@ -15,6 +15,8 @@ toast.configure();
 
 const PanelQuantity = () => {
 	
+	const [priceHasError, setPriceHasError] = useState(false);
+	const [countHasError, setCountHasError] = useState(false);
 	const products = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
 	const [reRender, setReRender] = useState(false);
@@ -97,22 +99,29 @@ const PanelQuantity = () => {
 		
 		price.forEach((item) => {
 			PriceCount(item.id, { price: item.price }).then((response) => {
-				if (response.status === 200) {
-					notify('ویرایش با موفقیت انجام شد', 'success');
-				} else {
-					notify('ویرایش با موفقیت انجام نشد', 'error');
+				if (response.status !== 200) {
+					setPriceHasError(true);
 				}
 			});
 		});
+		if (priceHasError === false) {
+			notify('ویرایش قیمت با موفقیت انجام شد', 'success');
+		} else {
+			notify('ویرایش قیمت با موفقیت انجام نشد', 'error');
+		}
+		
 		count.forEach((item) => {
 			PriceCount(item.id, { count: item.count }).then((response) => {
-				if (response.status === 200) {
-					notify('ویرایش با موفقیت انجام شد', 'success');
-				} else {
-					notify('ویرایش با موفقیت انجام نشد', 'error');
+				if (response.status !== 200) {
+					setCountHasError(true);
 				}
 			});
 		});
+		if (countHasError === false) {
+			notify('ویرایش موجودی با موفقیت انجام شد', 'success');
+		} else {
+			notify('ویرایش موجودی با موفقیت انجام نشد', 'error');
+		}
 		
 		setCloseInput(true);
 		handleSubmitBtn(true);

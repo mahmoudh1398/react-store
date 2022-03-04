@@ -52,31 +52,18 @@ const style = {
 
 const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh}) => {
 	
-	// const [status , setStatus] = useState(targetOrder.delivered);
-	
-	// const handleValueChange = () => {
-	// 	if(targetOrder.delivered === false){
-	// 		setStatus(true);
-	// 	}
-	// };
-	
-	
 	const handleEdit =  (e) => {
 		e.preventDefault();
 		const data = {...targetOrder};
 		if(targetOrder.delivered === false){
-			// setStatus(true);
 			data.delivered = !targetOrder.delivered;
 		}
-		// data.delivered = !targetOrder.delivered;
 		try {
 			editOrder(targetOrder.id ,data)
 				.then(res => {
 					console.log(res);
-					if (res.status === 200) {
-						if (orders.length-1 === 0 || orders.length-1 <= 0) {
-							prevPage();
-						}
+					if (orders.length-1 === 0 || orders.length-1 <= 0) {
+						prevPage();
 					}
 					close();
 					refresh();
@@ -86,8 +73,6 @@ const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh})
 			toast('خطا در ویرایش سفارش', 'error');
 			return Promise.reject(e)
 		}
-		close();
-		refresh();
 	}
 	
 	return (
