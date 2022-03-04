@@ -5,12 +5,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getOrders} from "api/orders.api";
 import {setOrders} from "redux/action/ordersAction";
-import {OrdersTable} from "./components";
+import {OrdersTable, VerifyBtn} from "./components";
+import {toast} from "react-toastify";
 
 
-let ordersCount;
+let totalOrders;
 
 const PanelOrders = () => {
+	
+	const [verifyOrderModalOpen, setVerifyOrderModalOpen] = React.useState(false);
+	const handleVerifyOrderModalOpen = () => setVerifyOrderModalOpen(true);
+	const handleVerifyOrderModalClose = () => setVerifyOrderModalOpen(false);
+	const [refresh, setRefresh] = React.useState(false);
+	const [targetOrder, setTargetOrder] = React.useState({});
 	const [radio, setRadio] = useState(false);
 	const [pagination, setPagination] = React.useState({
 		currentPage: 1,
@@ -31,13 +38,43 @@ const PanelOrders = () => {
 			setRadio(false);
 		}
 	};
+	const handleRefresh = () => {setRefresh(!refresh);};
 	
 	useEffect(() => {
 		getOrders(pagination.currentPage, radio).then((response) => {
-			ordersCount = +response[1];
+			totalOrders = +response[1];
 			dispatch(setOrders(response[0]));
 		});
-	}, [pagination.currentPage, radio]);
+	}, [pagination.currentPage, radio, refresh]);
+	
+	const notify = (message, type) => {
+		if (type === 'success') {
+			toast.success(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} else if (type === 'error') {
+			toast.error(message, {
+				position: "bottom-left",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+	};
+	
+	const handleOrderVerify = (order) => {
+		setTargetOrder(order);
+		handleVerifyOrderModalOpen();
+	};
 	
 	return (
 		<div className={style.wrapper}>
@@ -54,11 +91,16 @@ const PanelOrders = () => {
 				</form>
 			</div>
 			
-			<OrdersTable orders={orders} />
+			<OrdersTable orders={orders} openVerifyOrderModal={handleOrderVerify}/>
 			
-			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={ordersCount} paginate={paginate}
+			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={totalOrders} paginate={paginate}
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
+			
+			{verifyOrderModalOpen && <VerifyBtn orders={orders} targetOrder={targetOrder} toast={notify} prevPage={prevPage}
+			                             open={handleVerifyOrderModalOpen} close={handleVerifyOrderModalClose}
+			                             refresh={handleRefresh} />}
+			
 		</div>
 	);
 };

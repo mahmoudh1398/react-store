@@ -38,6 +38,7 @@ const Basket = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch()
 	const [personOrders, setPersonOrders] = useState([]);
+	const [totalPrice, setTotalPrice] = useState(0);
 	let renderStatus = useSelector(state => state.renderStatus.renderStatus)
 	
 	useEffect(() => {
@@ -46,7 +47,7 @@ const Basket = () => {
 	}, [])
 	
 	useEffect(() => {
-		const personOrders =JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
+		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
 		setPersonOrders(personOrders)
 	}, [renderStatus])
 	
@@ -57,12 +58,21 @@ const Basket = () => {
 		dispatch({type: 'RE_RENDER_STATUS', payload: !renderStatus})
 	}
 	
-	let totalPrices = 0;
-	personOrders.map(order => {
-		totalPrices += (order.price * order.userCount);
-		return totalPrices
-	})
-	const handleSubmit = () =>  navigate(`${PATHS.CHECKOUT}`);
+	useEffect(() => {
+		let sum = 0;
+		personOrders.map(order => {
+			sum += (order.price * order.userCount)
+		})
+		setTotalPrice(sum)
+	}, [personOrders])
+	
+	const handleSubmit = () =>  {
+		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
+		localStorage.setItem( 'TOTAL_COUNT' , JSON.stringify(totalPrice))
+		if(personOrders.length > 0 ){
+			navigate(`${PATHS.CHECKOUT}`)
+		}
+	};
 	
 	
 	return (
@@ -108,7 +118,7 @@ const Basket = () => {
 				</Table>
 			</TableContainer>
 			<div style={{margin:'4rem 0', display:'flex', justifyContent:'space-between'}}>
-				<span>جمع:  {totalPrices.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} هزار تومان  </span>
+				<span>جمع:  {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} هزار تومان  </span>
 				{personOrders.length > 0 ?
 					<Button variant="contained" className={style.submitBtn} size='large'  onClick={handleSubmit}>نهایی کردن سبد خرید</Button>
 					:

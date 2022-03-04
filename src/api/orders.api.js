@@ -1,4 +1,5 @@
 import http from "services/http.service";
+import {ORDERS} from "config/url.config";
 
 export const getOrders = async (currentPage, category) => {
   try {
@@ -8,3 +9,21 @@ export const getOrders = async (currentPage, category) => {
     return Promise.reject(e);
   }
 };
+
+export const postOrder = async (data) => {
+  try {
+    const response = await http.post(ORDERS, data);
+    return  response.data
+  }catch(e){
+    return Promise.reject(e);
+  }
+}
+
+export const editOrder = async (id ,data) => {
+  try {
+    const response = await http.put(`${ORDERS}/${id}`,data)
+    return  response.data
+  }catch(e){
+    return e
+  }
+}

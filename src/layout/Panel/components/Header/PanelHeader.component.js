@@ -5,9 +5,9 @@ import {IS_LOGGED_IN} from "config/variables.config";
 
 function PanelHeader(props) {
 	
-	const handelChange=(e)=>{
-		localStorage.setItem(IS_LOGGED_IN, false.toString());
-	}
+	// const handelChange=(e)=>{
+	// 	localStorage.setItem(IS_LOGGED_IN, false.toString());
+	// }
 	
 	return (
 		<header className={style.panelNavbar}>
@@ -18,7 +18,7 @@ function PanelHeader(props) {
 					<Link to='/panel-quantity'>موجودی و قیمت ها</Link>
 					<Link to='/panel-orders'>سفارش ها</Link>
 				</div>
-				<Link className={style.back_to_home} to='/' onClick={handelChange}>بازگشت به سایت</Link>
+				<Link className={style.back_to_home} to='/'>بازگشت به سایت</Link>
 			</div>
 		</header>
 	);

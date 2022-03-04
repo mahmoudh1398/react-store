@@ -202,7 +202,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 											multiple
 											onChange={handleImagesSelect}
 										/>
-										<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleImagesUpload}>
+										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleImagesUpload}>
 											آپلود تصاویر
 										</Button>
 									</div>
@@ -215,7 +215,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 											id="thumbnail"
 											onChange={handleThumbnailSelect}
 										/>
-										<Button variant="contained" sx={{mt: 1}} component="span" onClick={handleThumbnailUpload}>
+										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleThumbnailUpload}>
 											آپلود تصویر
 										</Button>
 									</div>

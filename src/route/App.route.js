@@ -2,11 +2,11 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {PATHS} from 'config/routes.config';
 import * as Page from 'page';
 import {ProtectedRoute, PublicRoute, PrivateRoute} from './components';
-import history from 'services/history.service';
+// import history from 'services/history.service';
 
 function AppRoute() {
 	return (
-		<BrowserRouter history={history}>
+		<BrowserRouter>
 			<Routes>
 				<Route path={PATHS.BASKET} element={<PublicRoute component={(props) => <Page.Basket {...props} />} />} />
 				<Route path={PATHS.CHECKOUT} element={<PublicRoute component={(props) => <Page.Checkout {...props} />} />} />

@@ -21,10 +21,13 @@ const Checkout = () => {
 		const form = new FormData(e.target);
 		const data = Object.fromEntries(form);
 		data.deliveryRequestTime = deliveryRequestTime;
-		const personOrders =JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
+		data.delivered = false;
+		const totalCount = JSON.parse(localStorage.getItem('TOTAL_COUNT')) ?? ''
+		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
 		data.personOrders = personOrders;
+		data.totalCount = totalCount;
 		localStorage.setItem( 'PERSON_INFO' , JSON.stringify(data))
-		// window.location.assign('http://127.0.0.1:5500/src/bank/')
+		// window.location.assign('http://127.0.0.1:5500/payment_gateway');
 	}
 	
 	return (
