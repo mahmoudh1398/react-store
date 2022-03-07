@@ -13,7 +13,7 @@ function StoreHeader() {
 	
 	const [count, setCount] = useState(0);
 	const [personOrders, setPersonOrders] = useState([]);
-	const renderStatus = useSelector((state) => state.renderStatus.renderStatus)
+	const basketStatusUpdate = useSelector((state) => state.basketStatusUpdate.basketStatusUpdate)
 	
 	
 	
@@ -29,7 +29,7 @@ function StoreHeader() {
 		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? [];
 		const personOrdersCount = personOrders.length
 		setCount(personOrdersCount)
-	}, [renderStatus])
+	}, [basketStatusUpdate])
 	
 	
 	

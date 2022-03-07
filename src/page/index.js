@@ -10,3 +10,4 @@ export {PanelQuantity} from './PanelQuantity/PanelQuantity.page';
 export {Products} from './Products/Products.page';
 export {Product} from './Product/Product.page';
 export {SuccessPayment} from './SuccessPayment/SuccessPayment.page';
+export {PaymentResult} from './PaymentResult/PaymentResult.page';

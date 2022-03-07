@@ -40,19 +40,19 @@ const ProductItem = ({productItem}) => {
 						{productItem ? productItem.name : ''}
 					</Typography>
 				</Box>
-				<CardActions  sx={{ display: 'flex' , justifyContent: 'space-between'}}>
-					<Box  sx={{ display: 'flex' , justifyContent: 'space-between', alignItems: 'center' }}>
-						<IconButton aria-label="add to cart" >
-							<ShoppingCartIcon
-								sx={{
-									color: "#004D40",
-									fontSize: 20 ,
-									'&:hover': {
-										color: "#7FD3B0",
-									},}}
-							/>
-						</IconButton>
-					</Box>
+				<CardActions  sx={{ display: 'flex' , justifyContent: 'center'}}>
+					{/*<Box  sx={{ display: 'flex' , justifyContent: 'space-between', alignItems: 'center' }}>*/}
+					{/*	<IconButton aria-label="add to cart" >*/}
+					{/*		<ShoppingCartIcon*/}
+					{/*			sx={{*/}
+					{/*				color: "#004D40",*/}
+					{/*				fontSize: 20 ,*/}
+					{/*				'&:hover': {*/}
+					{/*					color: "#7FD3B0",*/}
+					{/*				},}}*/}
+					{/*		/>*/}
+					{/*	</IconButton>*/}
+					{/*</Box>*/}
 					<Typography
 						variant="h5"
 						color="text.secondary"

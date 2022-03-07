@@ -3,7 +3,7 @@ import { productsReducer } from "./productsReducer";
 import {ordersReducer} from './ordersReducer';
 import {categoriesReducer} from './categoriesReducer';
 import {productReducer} from "./productReducer";
-import {renderStatusReducer} from "./reRenderStatusReducer";
+import {basketStatusUpdateReducer} from "./basketStatusUpdateReducer";
 
 
 const reducers = combineReducers({
@@ -11,7 +11,7 @@ const reducers = combineReducers({
   allOrders: ordersReducer,
   allCategories: categoriesReducer,
   product: productReducer,
-  renderStatus: renderStatusReducer,
+  basketStatusUpdate: basketStatusUpdateReducer,
 });
 
 export {reducers}

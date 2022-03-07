@@ -57,6 +57,7 @@ const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh})
 		const data = {...targetOrder};
 		if(targetOrder.delivered === false){
 			data.delivered = !targetOrder.delivered;
+			data.orderDeliveryEndTime = moment(new Date(), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')
 		}
 		try {
 			editOrder(targetOrder.id ,data)
@@ -108,11 +109,11 @@ const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh})
 						}}
 					>بررسی سفارش
 					</Typography>
-					<Typography id={targetOrder.id} variant="h6"> نام مشتری: {targetOrder.name}</Typography>
+					<Typography id={targetOrder.id} variant="h6"> نام مشتری: {targetOrder.name} {targetOrder.family ? targetOrder.family : ''}</Typography>
 					<Typography id={targetOrder.id} variant="h6"> آدرس: {targetOrder.address}</Typography>
 					<Typography id={targetOrder.id} variant="h6"> تلفن: {targetOrder.tel}</Typography>
-					<Typography id={targetOrder.id} variant="h6"> زمان تحویل: {moment(new Date(targetOrder.deliveryRequestTime), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</Typography>
-					<Typography id={targetOrder.id} variant="h6"> زمان سفارش: {moment(new Date(targetOrder.createdAt), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</Typography>
+					<Typography id={targetOrder.id} variant="h6"> تاریخ درخواست تحویل: {targetOrder.deliveryRequestTime}</Typography>
+					<Typography id={targetOrder.id} variant="h6"> تاریخ ثبت سفارش: {moment(new Date(targetOrder.createdAt), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</Typography>
 					<TableContainer component={Paper} sx={{my: 1}}>
 						<Table sx={{ minWidth: 500 }} aria-label="customized table">
 							<TableHead>
@@ -134,7 +135,7 @@ const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh})
 						</Table>
 					</TableContainer>
 					{targetOrder.delivered ?
-						<Typography id={targetOrder.id} variant="h6"> زمان تحویل: {moment(new Date(targetOrder.orderDeliveryEndTime), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')}</Typography>
+						<Typography id={targetOrder.id} variant="h6"> تاریخ تحویل: {targetOrder.orderDeliveryEndTime}</Typography>
 						:
 						<Box   noValidate  >
 							<Button

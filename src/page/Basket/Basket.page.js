@@ -15,6 +15,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {IMAGE_URL} from 'config/variables.config';
 import {PATHS} from "config/routes.config";
+import {DeleteBtn} from "./components";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -36,10 +37,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Basket = () => {
 	
 	const navigate = useNavigate();
-	const dispatch = useDispatch()
 	const [personOrders, setPersonOrders] = useState([]);
 	const [totalPrice, setTotalPrice] = useState(0);
-	let renderStatus = useSelector(state => state.renderStatus.renderStatus)
+	let basketStatusUpdate = useSelector(state => state.basketStatusUpdate.basketStatusUpdate)
 	
 	useEffect(() => {
 		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
@@ -49,14 +49,7 @@ const Basket = () => {
 	useEffect(() => {
 		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
 		setPersonOrders(personOrders)
-	}, [renderStatus])
-	
-	const handelDeleteOrder = ({target}) => {
-		const id = +target.id
-		const newOrders= personOrders.filter(item => item.id !== id)
-		localStorage.setItem( 'PERSON_ORDERS' , JSON.stringify(newOrders))
-		dispatch({type: 'RE_RENDER_STATUS', payload: !renderStatus})
-	}
+	}, [basketStatusUpdate])
 	
 	useEffect(() => {
 		let sum = 0;
@@ -109,8 +102,7 @@ const Basket = () => {
 								<StyledTableCell align="left" >{personOrder.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</StyledTableCell>
 								<StyledTableCell align="left" >{personOrder.userCount}</StyledTableCell>
 								<StyledTableCell align="right" sx={{pr:5}}>
-									<DeleteOutlineIcon id={personOrder.id} onClick={handelDeleteOrder}
-									                   sx={{cursor: 'pointer', color: 'red', fontSize: '20px'}}/>
+									<DeleteBtn  personOrder={personOrder} personOrders={personOrders}/>
 								</StyledTableCell>
 							</StyledTableRow>
 						))}

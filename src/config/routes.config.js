@@ -1,7 +1,7 @@
 export const PATHS = {
 	BASKET: '/basket',
 	CHECKOUT: '/checkout',
-	FAIL_PAYMENT: '/fail-payment',
+	// FAIL_PAYMENT: '/fail-payment',
 	HOME: '/',
 	NOT_FOUND: '/not-found',
 	PANEL_LOGIN: '/login',
@@ -10,5 +10,6 @@ export const PATHS = {
 	PANEL_QUANTITY: '/panel-quantity',
 	PRODUCT: '/product',
 	PRODUCTS: '/products',
-	SUCCESS_PAYMENT: '/success-payment',
+	// SUCCESS_PAYMENT: '/success-payment',
+	PAYMENT_RESULT: '/payment-result/:result',
 }

@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getOrders} from "api/orders.api";
 import {setOrders} from "redux/action/ordersAction";
-import {OrdersTable, VerifyBtn} from "./components";
+import {OrdersTable, VerifyBtn, DeleteModal} from "./components";
 import {toast} from "react-toastify";
 
 
@@ -16,6 +16,9 @@ const PanelOrders = () => {
 	const [verifyOrderModalOpen, setVerifyOrderModalOpen] = React.useState(false);
 	const handleVerifyOrderModalOpen = () => setVerifyOrderModalOpen(true);
 	const handleVerifyOrderModalClose = () => setVerifyOrderModalOpen(false);
+	const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+	const handleDeleteModalOpen = () => setDeleteModalOpen(true);
+	const handleDeleteModalClose = () => setDeleteModalOpen(false);
 	const [refresh, setRefresh] = React.useState(false);
 	const [targetOrder, setTargetOrder] = React.useState({});
 	const [radio, setRadio] = useState(false);
@@ -76,6 +79,11 @@ const PanelOrders = () => {
 		handleVerifyOrderModalOpen();
 	};
 	
+	const handleOrderDelete = (order) => {
+		setTargetOrder(order);
+		handleDeleteModalOpen();
+	}
+	
 	return (
 		<div className={style.wrapper}>
 			<div className={style.main_header}>
@@ -91,7 +99,7 @@ const PanelOrders = () => {
 				</form>
 			</div>
 			
-			<OrdersTable orders={orders} openVerifyOrderModal={handleOrderVerify}/>
+			<OrdersTable orders={orders} openVerifyOrderModal={handleOrderVerify} openDeleteModal={handleOrderDelete}/>
 			
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={totalOrders} paginate={paginate}
 			            nextPage={nextPage}
@@ -100,6 +108,10 @@ const PanelOrders = () => {
 			{verifyOrderModalOpen && <VerifyBtn orders={orders} targetOrder={targetOrder} toast={notify} prevPage={prevPage}
 			                             open={handleVerifyOrderModalOpen} close={handleVerifyOrderModalClose}
 			                             refresh={handleRefresh} />}
+			
+			{deleteModalOpen && <DeleteModal orders={orders} targetOrder={targetOrder}
+			                                 open={deleteModalOpen} close={handleDeleteModalClose}
+			                                 refresh={handleRefresh} toast={notify} prevPage={prevPage}/>}
 			
 		</div>
 	);

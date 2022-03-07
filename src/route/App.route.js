@@ -10,7 +10,7 @@ function AppRoute() {
 			<Routes>
 				<Route path={PATHS.BASKET} element={<PublicRoute component={(props) => <Page.Basket {...props} />} />} />
 				<Route path={PATHS.CHECKOUT} element={<PublicRoute component={(props) => <Page.Checkout {...props} />} />} />
-				<Route path={PATHS.FAIL_PAYMENT} element={<PublicRoute component={(props) => <Page.FailPayment {...props} />} />} />
+				{/*<Route path={PATHS.FAIL_PAYMENT} element={<PublicRoute component={(props) => <Page.FailPayment {...props} />} />} />*/}
 				<Route path={PATHS.HOME} element={<PublicRoute component={(props) => <Page.Home {...props} />} />}>
 					{/*<Route path=":homeid" element={<PublicRoute component={(props) => <Page.Product {...props} />} />} />*/}
 				</Route>
@@ -23,7 +23,8 @@ function AppRoute() {
 				<Route path={`${PATHS.PRODUCT}/:id`} element={<PublicRoute component={(props) => <Page.Product {...props} />} />}>
 					{/*<Route path=":id" element={<PublicRoute component={(props) => <Test {...props} />} />} />*/}
 				</Route>
-				<Route path={PATHS.SUCCESS_PAYMENT} element={<PublicRoute component={(props) => <Page.SuccessPayment {...props} />} />} />
+				{/*<Route path={PATHS.SUCCESS_PAYMENT} element={<PublicRoute component={(props) => <Page.SuccessPayment {...props} />} />} />*/}
+				<Route path={PATHS.PAYMENT_RESULT} element={<PublicRoute component={(props) => <Page.PaymentResult {...props} />} />} />
 			</Routes>
 		</BrowserRouter>
 	);

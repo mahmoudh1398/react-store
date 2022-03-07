@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import styles from "./Product.module.scss";
-import {Link, useParams} from 'react-router-dom';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import {Link, useParams} from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import Card from '@mui/material/Card';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import styles from "./Product.module.scss";
 import {getProduct} from "api/product.api";
 import {setProduct} from "redux/action/productAction";
 import {IMAGE_URL} from "config/variables.config";
@@ -15,8 +15,10 @@ const Product = () => {
 	const dispatch = useDispatch();
 	const targetProduct = useSelector((state) => state.product.product ? state.product.product[0] : []);
 	const [count, setCount] = useState(1);
-	const renderStatus = useSelector((state) => state.renderStatus.renderStatus);
+	const basketStatusUpdate = useSelector((state) => state.basketStatusUpdate.basketStatusUpdate);
 	const [personOrders, setPersonOrders] = useState([]);
+	const [isTooMuch, setIsTooMuch] = useState(false);
+	
 	
 	useEffect(() => {
 		getProduct(id).then((data) => {
@@ -27,19 +29,22 @@ const Product = () => {
 	useEffect(() => {
 		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? [];
 		setPersonOrders(personOrders);
-		// if (targetProduct) {
-			personOrders.map(item => {
-				if(item.id === +id){
-					setCount(item.userCount)
-				}else{
-					setCount(1)
-				}
-			})
-		// }
+		personOrders.map(item => {
+			if(item.id === +id){
+				setCount(item.userCount)
+			}else{
+				setCount(1)
+			}
+		})
 	}, [])
 	
 	const handleCountChange = (e) => {
-		setCount(e.target.value);
+		if (+e.target.value > +e.target.max) {
+			setIsTooMuch(true);
+		}else {
+			setIsTooMuch(false);
+			setCount(e.target.value);
+		}
 	};
 	
 	const handleSubmit = (e) => {
@@ -48,7 +53,7 @@ const Product = () => {
 		data.userCount = count;
 		const newOrders= personOrders.filter(item => item.id !== +id)
 		localStorage.setItem( 'PERSON_ORDERS' , JSON.stringify([...newOrders , data]))
-		dispatch({type: 'RE_RENDER_STATUS', payload: !renderStatus});
+		dispatch({type: 'RE_RENDER_STATUS', payload: !basketStatusUpdate});
 	};
 	
 	
@@ -93,6 +98,7 @@ const Product = () => {
 									</button>
 								}
 							</form>
+							{isTooMuch && <span style={{color: 'red'}}>با عرض پوزش ولی مقدار انتخابی شما بیشتر از موجودی است</span>}
 						</div>
 					</div>
 					<div className={styles.description}>

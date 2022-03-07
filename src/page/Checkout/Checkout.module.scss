@@ -6,6 +6,11 @@
   display: flex;
 }
 
+.error {
+  display: flex;
+  flex-direction: column;
+}
+
 .date {
   width: 540px;
   margin: 10px 25px;

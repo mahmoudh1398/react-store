@@ -18,7 +18,8 @@ const modalStyle = {
 	justifyContent: 'center',
 	height: 200,
 };
-function DeleteModal({products, targetProduct, open, close, refresh, toast, prevPage}) {
+
+function DeleteModal({orders, targetOrder, open, close, refresh, toast, prevPage}) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 	
@@ -29,19 +30,19 @@ function DeleteModal({products, targetProduct, open, close, refresh, toast, prev
 	const handleDelete = () => {
 		try {
 			http
-				.delete(`/products/${targetProduct.id}`)
+				.delete(`/orders/${targetOrder.id}`)
 				.then((res) => {
 					console.log(res);
-					if (products.length-1 === 0 || products.length-1 <= 0) {
+					if (orders.length-1 === 0 || orders.length-1 <= 0) {
 						prevPage();
 					}
 					refresh();
 					close();
-					toast('کالا با موفقیت حذف شد', 'success');
+					toast('سفارش با موفقیت حذف شد', 'success');
 				});
 		} catch (e) {
 			console.log(e);
-			toast('خطا در حذف کالا', 'error');
+			toast('خطا در حذف سفارش', 'error');
 		}
 	}
 	
@@ -55,11 +56,11 @@ function DeleteModal({products, targetProduct, open, close, refresh, toast, prev
 			>
 				<Box sx={modalStyle}>
 					<DialogTitle id="responsive-dialog-title">
-						آیا از حذف این کالا مطمئن هستید؟
+						آیا از حذف این سفارش مطمئن هستید؟
 					</DialogTitle>
 					<DialogContent>
 						<DialogContentText>
-							{targetProduct.name}
+							{targetOrder.name} {targetOrder.family}
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
