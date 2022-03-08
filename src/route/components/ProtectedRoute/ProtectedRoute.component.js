@@ -8,7 +8,7 @@ const TargetPage = ({Component, hasLayout}) => {
 	const isLoggedIn = localStorage.getItem('IS_LOGGED_IN') === 'true';
 
   if (isLoggedIn) {
-    return <Navigate replace to={PATHS.PANEL_PRODUCT} />
+    return <Navigate replace to={PATHS.PANEL_PRODUCTS} />
   }
 	
 	return hasLayout ? (

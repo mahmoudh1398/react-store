@@ -14,12 +14,13 @@
     transition: 0.6s;
     width: 100%;
     z-index: 1;
+    color: #fff;
 
     h1{
         font-size: 18px;
 
         &:hover{
-            color: #FFFAFA;
+            color: #fff;
         }
     }
 }
@@ -28,7 +29,7 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    width: 35%;
+    width: 50%;
 }
 
 .back_to_home {
@@ -57,7 +58,7 @@
 .navButtons {
     box-shadow: 0 3px 2px 2px rgba(0, 0, 0, 0.3);
     display: flex;
-    width: 75%;
+    width: 65%;
 
     a {
         align-items: center;
@@ -76,5 +77,18 @@
             color: #FFFAFA;
             transform: translateY(-3px);
         }
+    }
+}
+
+.admin {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+}
+
+.logoutBtn {
+    &:hover {
+        cursor: pointer;
+        transform: translateX(5px);
     }
 }

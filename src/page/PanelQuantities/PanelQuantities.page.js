@@ -1,4 +1,4 @@
-import style from './PanelQuantity.module.scss';
+import style from './PanelQuantities.module.scss';
 import * as React from "react";
 import {Pagination} from "components/Pagination/Pagination.component";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,7 +13,7 @@ import {toast, ToastContainer} from "react-toastify";
 let productsCount;
 toast.configure();
 
-const PanelQuantity = () => {
+const PanelQuantities = () => {
 	
 	const [priceHasError, setPriceHasError] = useState(false);
 	const [countHasError, setCountHasError] = useState(false);
@@ -187,4 +187,4 @@ const PanelQuantity = () => {
 	);
 };
 
-export {PanelQuantity};
+export {PanelQuantities};

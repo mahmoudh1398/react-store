@@ -1,4 +1,4 @@
-import style from './PanelProduct.module.scss';
+import style from './PanelProducts.module.scss';
 import * as React from "react";
 import {Pagination} from "components";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import {DeleteModal} from "./components";
 toast.configure();
 let productsCount;
 
-const PanelProduct = () => {
+const PanelProducts = () => {
 	
 	const [addModalOpen, setAddModalOpen] = React.useState(false);
 	const handleAddModalOpen = () => setAddModalOpen(true);
@@ -130,4 +130,4 @@ const PanelProduct = () => {
 	);
 };
 
-export {PanelProduct};
+export {PanelProducts};

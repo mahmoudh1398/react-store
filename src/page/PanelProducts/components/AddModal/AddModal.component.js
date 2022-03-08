@@ -1,18 +1,17 @@
-import * as React from 'react';
+import {useState} from "react";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from "./AddModal.module.scss";
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import FormData from "form-data";
 import http from "services/http.service";
-import Button from "@mui/material/Button";
-import {useState} from "react";
 
 
 const style = {
@@ -45,15 +44,27 @@ const initialValues = {
 function AddModal({open, close, categories, refresh, toast}) {
 	
 	const [uploadedImages, setUploadedImages] = useState([]);
-	const [thumbnail , setThumbnail] = React.useState('');
-	const [category, setCategory] = React.useState({
+	const [thumbnail , setThumbnail] = useState('');
+	const [category, setCategory] = useState({
 		id: null,
 		name: '',
 	});
-	const [description, setDescription] = React.useState('');
+	const [description, setDescription] = useState('');
 	
 	const handleImagesSelect = (event) => {
-		initialValues.image = Array.from(event.target.files);
+		console.log(event.target.files[0].type);
+		if (event.target.files[0]) {
+			const file = event.target.files[0];
+			const pattern = /image-jpeg/;
+
+			if (!file.type.match(pattern)) {
+				alert('فرمت فایل باید jpeg باشد');
+				event.target.value = '';
+				return;
+			}
+
+			initialValues.image = Array.from(event.target.files);
+		}
 	};
 	
 	const handleImagesUpload = () => {
@@ -199,8 +210,8 @@ function AddModal({open, close, categories, refresh, toast}) {
 											type="file"
 											name="image"
 											id="image"
-											multiple
 											onChange={handleImagesSelect}
+											accept="image/jpeg"
 										/>
 										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleImagesUpload}>
 											آپلود تصاویر

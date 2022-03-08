@@ -5,60 +5,38 @@ import  style  from './Checkout.module.scss';
 import {DatePicker} from "react-advance-jalaali-datepicker";
 import {useState} from "react";
 import moment from "jalali-moment";
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 const Checkout = () => {
 	
-	const [error, setError] = useState({
+	const initialValues = {
 		name: '',
 		family: '',
 		address: '',
 		tel: '',
-		deliveryRequestTime: '',
-	});
-	
-	const handleValidation = ({target}) => {
-		if (target.name === 'name'){
-			let p = /^[\u0600-\u06FF\s]+$/;
-			if (!p.test(target.value)) {
-				setError({...error, name: 'چرا فحش میدی :|'});
-			}else if (target.value.length < 3){
-				setError({...error, name: 'چی شده؟'});
-			}else {
-				setError({...error, name: ''});
-			}
-		}
-		
-		if (target.name === 'family'){
-			let p = /^[\u0600-\u06FF\s]+$/;
-			if (!p.test(target.value)) {
-				setError({...error, family: 'چرا فحش میدی :|'});
-			}else if (target.value.length < 3){
-				setError({...error, family: 'چی شده؟'});
-			}else {
-				setError({...error, family: ''});
-			}
-		}
-		
-		if (target.name === 'address'){
-			let p = /^[\u0600-\u06FF\s]+$/;
-			if (!p.test(target.value)) {
-				setError({...error, address: 'خط تیره نزن، با ویرگول جدا کن'});
-			}else if (target.value.length < 3){
-				setError({...error, address: ':|'});
-			}else {
-				setError({...error, address: ''});
-			}
-		}
-		
-		if (target.name === 'tel'){
-			let p = /^(09[0-9]{9})$/;
-			if (!p.test(target.value)) {
-				setError({...error, tel: 'این چیه'});
-			}else {
-				setError({...error, tel: ''});
-			}
-		}
+		deliveryRequestTime: ''
 	};
+	
+	const checkoutSchema = Yup.object().shape({
+		name: Yup.string()
+			.min(2, 'خیلی کوتاه!')
+			.max(50, 'خیلی بلند!')
+			.required('پر کردن این فیلد الزامی است!')
+			.matches(/^[\u0600-\u06FF\s]+$/, "چرا فحش میدی؟"),
+		family: Yup.string()
+			.min(2, 'خیلی کوتاه!')
+			.max(50, 'خیلی بلند!')
+			.required('پر کردن این فیلد الزامی است')
+			.matches(/^[\u0600-\u06FF\s]+$/, "چرا فحش میدی؟"),
+		address: Yup.string()
+			.matches(/^[\u0600-\u06FF0-9\s,'-]*$/, "چرا فحش میدی؟")
+			.required('پر کردن این فیلد الزامی است'),
+		tel: Yup.string()
+			.matches(/^(09[0-9]{9})$/, "با 09 شروع میشه و باید 11 رقم باشه")
+			.max(11, "با 09 شروع میشه و باید 11 رقم باشه")
+			.required('پر کردن این فیلد الزامی است'),
+	});
 	
 	let currentDate = new Date().toISOString().slice(0, 10);
 	currentDate = moment(new Date(currentDate), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')
@@ -74,110 +52,123 @@ const Checkout = () => {
 		isValidDate = true;
 	}
 	
-	const handleSubmit =  (e) => {
-		e.preventDefault();
-		const form = new FormData(e.target);
-		const data = Object.fromEntries(form);
-		data.deliveryRequestTime = deliveryRequestTime;
-		data.delivered = false;
+	const handleSubmit =  (formValues) => {
+		formValues.deliveryRequestTime = deliveryRequestTime;
+		formValues.delivered = false;
 		const totalCount = JSON.parse(localStorage.getItem('TOTAL_COUNT')) ?? ''
 		const personOrders = JSON.parse(localStorage.getItem('PERSON_ORDERS')) ?? []
-		data.personOrders = personOrders;
-		data.totalCount = totalCount;
-		localStorage.setItem( 'PERSON_INFO' , JSON.stringify(data))
+		formValues.personOrders = personOrders;
+		formValues.totalCount = totalCount;
+		localStorage.setItem( 'PERSON_INFO' , JSON.stringify(formValues))
 		window.location.assign('http://localhost:3001/');
 	}
 	
 	return (
 		<div className={style.checkout_wrapper}>
 			<h2 style={{margin:'2rem 7rem'}}>نهایی کردن خرید</h2>
-			<Box component="form" onSubmit={handleSubmit} validate
-			     sx={{
-				     m: '1rem auto',
-				     p: '1rem',
-				     width: '90%',
-				     height: '70vh',
-				     boxShadow: 2,
-			     }}
+			<Formik
+				initialValues={{...initialValues}}
+				validationSchema={checkoutSchema}
+				onSubmit={values => {
+					handleSubmit(values);
+				}}
 			>
-				<div className={style.row}>
-					<div className={style.error}>
-						<TextField
-							margin="normal"
-							required
-							sx={{width:550, m: 3}}
-							id="name"
-							label="نام "
-							name="name"
-							autoComplete="name"
-							onChange={handleValidation}
-						/>
-						{error.name && <p style={{color: 'red', marginRight: '3rem'}}>{error.name}</p>}
-					</div>
-					<div className={style.error}>
-						<TextField
-							margin="normal"
-							required
-							sx={{width:550 , m: 3}}
-							name="family"
-							label="نام خانوادگی "
-							id="family"
-							autoComplete="family"
-							onChange={handleValidation}
-						/>
-						{error.family && <p style={{color: 'red', marginRight: '3rem'}}>{error.family}</p>}
-					</div>
-				</div>
-				<div className={style.row}>
-					<div className={style.error}>
-						<TextField
-							id="filled-multiline-flexible"
-							label="آدرس"
-							sx={{width:550, m: 3}}
-							multiline
-							name='address'
-							rows="2"
-							required
-							onChange={handleValidation}
-						/>
-						{error.address && <p style={{color: 'red', marginRight: '3rem'}}>{error.address}</p>}
-					</div>
-					<div className={style.error}>
-						<TextField
-							margin="normal"
-							required
-							sx={{width:550, m: 3}}
-							name="tel"
-							label="تلفن همراه "
-							id="tel"
-							autoComplete="tel"
-							onChange={handleValidation}
-						/>
-						{error.tel && <p style={{color: 'red', marginRight: '3rem'}}>{error.tel}</p>}
-					</div>
-				</div>
-				<div className={style.row}>
-					<DatePicker
-						inputComponent={DatePickerInput}
-						placeholder="انتخاب تاریخ تحویل"
-						format="jYYYY/jMM/jDD"
-						onChange={dateChange}
-						id="deliveryRequestTime"
-						required
-						name="deliveryRequestTime"
-					/>
-				</div>
-				{isValidDate && <p style={{color:'red', marginRight: '3rem'}}>تاریخ درخواست تحویل باید بعد از تاریخ جاری باشد</p>}
-				<div className={style.row}>
-					<Button
-						type="submit"
-						variant="contained"
-						className={style.submit}
-					>
-						پرداخت
-					</Button>
-				</div>
-			</Box>
+				{({
+					  errors,
+					  handleBlur,
+					  handleChange,
+					  handleSubmit,
+					  isValid,
+					  touched,
+					  values}) => (
+					<Form className={style.checkout_form}>
+						<div className={style.row}>
+							<div className={style.error}>
+								<TextField
+									sx={{width:550, mt: 3, mx: 3}}
+									id="name"
+									name="name"
+									label="نام"
+									autoComplete="name"
+									error={Boolean(touched.name && errors.name)}
+									helperText={touched.name && errors.name}
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.name}
+								/>
+							</div>
+							<div className={style.error}>
+								<TextField
+									sx={{width:550 , m: 3}}
+									id="family"
+									name="family"
+									label="نام خانوادگی"
+									autoComplete="family"
+									error={Boolean(touched.family && errors.family)}
+									helperText={touched.family && errors.family}
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.family}
+								/>
+							</div>
+						</div>
+						<div className={style.row}>
+							<div className={style.error}>
+								<TextField
+									sx={{width:550, m: 3}}
+									id="address"
+									name='address'
+									label="آدرس"
+									multiline
+									rows="1"
+									error={Boolean(touched.address && errors.address)}
+									helperText={touched.address && errors.address}
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.address}
+								/>
+							</div>
+							<div className={style.error}>
+								<TextField
+									sx={{width:550, m: 3}}
+									id="tel"
+									name="tel"
+									label="تلفن همراه"
+									autoComplete="tel"
+									error={Boolean(touched.tel && errors.tel)}
+									helperText={touched.tel && errors.tel}
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.tel}
+								/>
+							</div>
+						</div>
+						<div className={style.row}>
+							<div className={style.datePicker}>
+								<DatePicker
+									inputComponent={DatePickerInput}
+									placeholder="انتخاب تاریخ تحویل"
+									format="jYYYY/jMM/jDD"
+									onChange={dateChange}
+									id="deliveryRequestTime"
+									name="deliveryRequestTime"
+								/>
+								{isValidDate && <p style={{color:'red'}}>تاریخ درخواست تحویل باید بعد از تاریخ جاری باشد</p>}
+							</div>
+						</div>
+						<div className={style.row}>
+							<Button
+								type="submit"
+								variant="contained"
+								className={style.submit}
+								disabled={Boolean(!isValid)}
+							>
+								پرداخت
+							</Button>
+						</div>
+					</Form>
+				)}
+			</Formik>
 		</div>
 	);
 };

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import {TextField} from "@mui/material";
 import {PATHS} from "config/routes.config";
 import {loginUser} from "api/login.api";
-import {ACCESS_TOKEN, IS_LOGGED_IN} from "config/variables.config";
+import {ACCESS_TOKEN, ADMIN_FULL_NAME, IS_LOGGED_IN} from "config/variables.config";
 
 
 const PanelLogin = () => {
@@ -56,7 +56,8 @@ const PanelLogin = () => {
 						loginUser(values).then((res) => {
 							localStorage.setItem(ACCESS_TOKEN, res.token);
 							localStorage.setItem(IS_LOGGED_IN, true.toString());
-							navigate(PATHS.PANEL_PRODUCT);
+							localStorage.setItem(ADMIN_FULL_NAME, res.name)
+							navigate(PATHS.PANEL_PRODUCTS);
 						});
 					}}
 				>
