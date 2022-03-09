@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {notify} from "utils/notify";
 
 
 const style = {
@@ -31,7 +32,7 @@ const style = {
 	p: 4,
 };
 
-const EditModal = ({targetProduct, open, toast, close, refresh}) => {
+const EditModal = ({targetProduct, open, close, refresh}) => {
 	
 	const [name, setName] = React.useState(targetProduct.name);
 	const [price , setPrice] = React.useState(targetProduct.price);
@@ -50,10 +51,10 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 				.then(res => {
 					imageIds ? setImageIds([...imageIds, res.filename])
 						: setImageIds([res.filename]);
-					toast('تصویر با موفقیت آپلود شد', 'success');
+					notify('تصویر با موفقیت آپلود شد', 'success');
 				})
 		} catch (e) {
-			toast('خطا در آپلود تصویر', 'error');
+			notify('خطا در آپلود تصویر', 'error');
 			return Promise.reject(e)
 		}
 	}
@@ -67,10 +68,10 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 				.then(res => {
 					setThumbnail(res.filename)
 					console.log(res);
-					toast('تصویر با موفقیت آپلود شد', 'success');
+					notify('تصویر با موفقیت آپلود شد', 'success');
 				})
 		} catch (e) {
-			toast('خطا در آپلود تصویر', 'error');
+			notify('خطا در آپلود تصویر', 'error');
 			return Promise.reject(e)
 		}
 	}
@@ -112,10 +113,10 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 			editData({id ,data})
 				.then(res => {
 					console.log(res);
-					toast('کالا با موفقیت ویرایش شد', 'success');
+					notify('کالا با موفقیت ویرایش شد', 'success');
 				})
 		} catch (e) {
-			toast('خطا در ویرایش کالا', 'error');
+			notify('خطا در ویرایش کالا', 'error');
 			return Promise.reject(e)
 		}
 		close();
@@ -162,7 +163,7 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 							mb:5 ,
 							fontWeight: 'bold',
 						}}
-					> تصاویر کالا :
+					> آلبوم تصاویر:
 					</Typography>
 					<Box component="form" onSubmit={handleImagesUpload} sx={{
 						display: 'flex',
@@ -197,7 +198,9 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 								height: '45px' ,
 								width : '25%',
 								boxShadow: 0 ,
-								borderRadius: 1
+								borderRadius: 1,
+								backgroundColor: '#004D40',
+								":hover" :{backgroundColor: '#00695C'}
 							}}>
 							<Typography  variant="h8"   sx={{ color:"white" }}>آپلود تصاویر</Typography>
 						</Button>
@@ -288,7 +291,9 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 								height: '45px' ,
 								width : '25%',
 								boxShadow: 0 ,
-								borderRadius: 1
+								borderRadius: 1,
+								backgroundColor: '#004D40',
+								":hover" :{backgroundColor: '#00695C'}
 							}}>
 							<Typography  variant="h8"   sx={{ color:"white" }}>آپلود تصویر</Typography>
 						</Button>
@@ -381,7 +386,8 @@ const EditModal = ({targetProduct, open, toast, close, refresh}) => {
 						onClick={handleEdit}
 						fullWidth
 						variant="contained"
-						sx={{ mt: 3, mb: 2 , height: '50px'}}
+						sx={{ mt: 3, mb: 2 , height: '50px', backgroundColor: '#004D40',
+							":hover" :{backgroundColor: '#00695C'}}}
 					>
 						ذخیره
 					</Button>

@@ -9,12 +9,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import styles from "./AddModal.module.scss";
 import FormData from "form-data";
+
 import http from "services/http.service";
+import {notify} from "utils/notify";
+
+import style from "./AddModal.module.scss";
 
 
-const style = {
+const addModalStyle = {
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
@@ -41,7 +44,7 @@ const initialValues = {
 	description: '',
 };
 
-function AddModal({open, close, categories, refresh, toast}) {
+function AddModal({open, close, categories, refresh}) {
 	
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [thumbnail , setThumbnail] = useState('');
@@ -52,17 +55,18 @@ function AddModal({open, close, categories, refresh, toast}) {
 	const [description, setDescription] = useState('');
 	
 	const handleImagesSelect = (event) => {
-		console.log(event.target.files[0].type);
 		if (event.target.files[0]) {
-			const file = event.target.files[0];
-			const pattern = /image-jpeg/;
-
-			if (!file.type.match(pattern)) {
-				alert('فرمت فایل باید jpeg باشد');
+			const image = event.target.files[0];
+			if (image.type !== 'image/jpeg') {
+				alert('فرمت تصویر باید jpeg باشد');
 				event.target.value = '';
 				return;
 			}
-
+			if (image.size > 2 * 1024 * 1024) {
+				alert('حجم تصویر باید کمتر از 2 مگابایت باشد');
+				event.target.value = '';
+				return;
+			}
 			initialValues.image = Array.from(event.target.files);
 		}
 	};
@@ -79,20 +83,32 @@ function AddModal({open, close, categories, refresh, toast}) {
 						},
 					})
 					.then((res) => {
-						console.log(res);
 						uploadedImages ? setUploadedImages([...uploadedImages, res.data.filename]) : setUploadedImages([res.data.filename]);
-						toast('تصویر با موفقیت آپلود شد', 'success');
+						notify('تصویر با موفقیت آپلود شد', 'success');
 					});
 			}
 			catch (error) {
 				console.log(error);
-				toast('خطا در آپلود تصویر', 'error');
+				notify('خطا در آپلود تصویر', 'error');
 			}
 		}
 	};
 	
 	const handleThumbnailSelect = (event) => {
-		initialValues.thumbnail = Array.from(event.target.files);
+		if (event.target.files[0]) {
+			const thumbnail = event.target.files[0];
+			if (thumbnail.type !== 'image/jpeg') {
+				alert('فرمت تصویر باید jpeg باشد');
+				event.target.value = '';
+				return;
+			}
+			if (thumbnail.size > 2 * 1024 * 1024) {
+				alert('حجم تصویر باید کمتر از 2 مگابایت باشد');
+				event.target.value = '';
+				return;
+			}
+			initialValues.thumbnail = Array.from(event.target.files);
+		}
 	};
 	
 	const handleThumbnailUpload = () => {
@@ -107,15 +123,14 @@ function AddModal({open, close, categories, refresh, toast}) {
 						},
 					})
 					.then((res) => {
-						console.log(res);
 						setThumbnail(res.data.filename);
 						// thumbnail ? setThumbnail(res.data.filename) : setThumbnail('');
-						toast('تصویر با موفقیت آپلود شد', 'success');
+						notify('تصویر با موفقیت آپلود شد', 'success');
 					});
 			}
 			catch (error) {
 				console.log(error);
-				toast('خطا در آپلود تصویر', 'error');
+				notify('خطا در آپلود تصویر', 'error');
 			}
 		}
 	};
@@ -161,12 +176,12 @@ function AddModal({open, close, categories, refresh, toast}) {
 					console.log(res);
 					close();
 					refresh();
-					toast('کالا با موفقیت اضافه شد', 'success');
+					notify('کالا با موفقیت اضافه شد', 'success');
 				});
 		}
 		catch (error) {
 			console.log(error);
-			toast('خطا در افزودن کالا', 'error');
+			notify('خطا در افزودن کالا', 'error');
 		}
 	};
 	
@@ -177,7 +192,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 				open={open}
 				// onClose={close}
 			>
-				<Box sx={style}>
+				<Box sx={addModalStyle}>
 					<IconButton
 						aria-label="close"
 						onClick={close}
@@ -190,9 +205,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 					>
 						<CloseIcon />
 					</IconButton>
-					<Typography variant="h6" component="h2">
-						افزودن / ویرایش کالا
-					</Typography>
+					<h3>افزودن کالا</h3>
 					<Formik
 						initialValues={initialValues}
 						validationSchema={signInSchema}
@@ -203,9 +216,9 @@ function AddModal({open, close, categories, refresh, toast}) {
 						{(formik) => {
 							const { isValid, dirty } = formik;
 							return (
-								<Form className={styles.product_modal}>
+								<Form className={style.product_modal}>
 									<div>
-										<label htmlFor="image">تصاویر کالا:</label>
+										<label htmlFor="image">آلبوم تصاویر:</label>
 										<input
 											type="file"
 											name="image"
@@ -219,12 +232,13 @@ function AddModal({open, close, categories, refresh, toast}) {
 									</div>
 									
 									<div>
-										<label htmlFor="thumbnail">تصویر بند انگشتی کالا:</label>
+										<label htmlFor="thumbnail">تصویر بند انگشتی:</label>
 										<input
 											type="file"
 											name="thumbnail"
 											id="thumbnail"
 											onChange={handleThumbnailSelect}
+											accept="image/jpeg"
 										/>
 										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleThumbnailUpload}>
 											آپلود تصویر
@@ -232,13 +246,13 @@ function AddModal({open, close, categories, refresh, toast}) {
 									</div>
 									
 									<div>
-										<label htmlFor="name">نام کالا:</label>
+										<label htmlFor="name">نام:</label>
 										<Field
 											type="text"
 											name="name"
 											id="name"
 										/>
-										<ErrorMessage name="name" component="span" className={styles.error}/>
+										<ErrorMessage name="name" component="span" className={style.error}/>
 									</div>
 									
 									<div>
@@ -249,7 +263,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 												<option key={category.id} value={category.name}>{category.name}</option>
 											))}
 										</Field>
-										<ErrorMessage name="category" component="span" className={styles.error}/>
+										<ErrorMessage name="category" component="span" className={style.error}/>
 									</div>
 									
 									<div>
@@ -264,7 +278,7 @@ function AddModal({open, close, categories, refresh, toast}) {
 									
 									<button
 										type="submit"
-										className={!(dirty && isValid) ? styles.disabled_btn : null}
+										className={!(dirty && isValid) ? style.disabled_btn : null}
 										disabled={!(dirty && isValid)}
 									>
 										ذخیره

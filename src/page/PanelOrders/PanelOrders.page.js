@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import {getOrders} from "api/orders.api";
 import {setOrders} from "redux/action/ordersAction";
 import {OrdersTable, VerifyBtn, DeleteModal} from "./components";
-import {toast} from "react-toastify";
 
 
 let totalOrders;
@@ -50,30 +49,6 @@ const PanelOrders = () => {
 		});
 	}, [pagination.currentPage, radio, refresh]);
 	
-	const notify = (message, type) => {
-		if (type === 'success') {
-			toast.success(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		} else if (type === 'error') {
-			toast.error(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		}
-	};
-	
 	const handleOrderVerify = (order) => {
 		setTargetOrder(order);
 		handleVerifyOrderModalOpen();
@@ -105,13 +80,13 @@ const PanelOrders = () => {
 			            nextPage={nextPage}
 			            prevPage={prevPage}/>
 			
-			{verifyOrderModalOpen && <VerifyBtn orders={orders} targetOrder={targetOrder} toast={notify} prevPage={prevPage}
+			{verifyOrderModalOpen && <VerifyBtn orders={orders} targetOrder={targetOrder} prevPage={prevPage}
 			                             open={handleVerifyOrderModalOpen} close={handleVerifyOrderModalClose}
 			                             refresh={handleRefresh} />}
 			
 			{deleteModalOpen && <DeleteModal orders={orders} targetOrder={targetOrder}
 			                                 open={deleteModalOpen} close={handleDeleteModalClose}
-			                                 refresh={handleRefresh} toast={notify} prevPage={prevPage}/>}
+			                                 refresh={handleRefresh} prevPage={prevPage}/>}
 			
 		</div>
 	);

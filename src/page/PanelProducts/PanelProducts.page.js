@@ -1,63 +1,64 @@
-import style from './PanelProducts.module.scss';
-import * as React from "react";
-import {Pagination} from "components";
+import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {useEffect} from "react";
-import {filteredProducts} from "redux/action/productsAction";
-import {getFilteredProducts} from "api/products.api";
-import {ProductsTable} from './components';
-import {getCategories} from "api/categories.api";
-import {setCategories} from "redux/action/categoriesAction";
-import {AddModal} from "./components";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {EditModal} from "./components";
-import {DeleteModal} from "./components";
 
-toast.configure();
-let productsCount;
+import {getFilteredProducts} from "api/products.api";
+import {getCategories} from "api/categories.api";
+import {Pagination} from "components";
+import {filteredProducts} from "redux/action/productsAction";
+import {setCategories} from "redux/action/categoriesAction";
+
+import {ProductsTable, AddModal, EditModal, DeleteModal} from './components';
+import style from './PanelProducts.module.scss';
+
 
 const PanelProducts = () => {
 	
-	const [addModalOpen, setAddModalOpen] = React.useState(false);
-	const handleAddModalOpen = () => setAddModalOpen(true);
-	const handleAddModalClose = () => setAddModalOpen(false);
-	const [editModalOpen, setEditModalOpen] = React.useState(false);
-	const handleEditModalOpen = () => setEditModalOpen(true);
-	const handleEditModalClose = () => setEditModalOpen(false);
-	const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
-	const handleDeleteModalOpen = () => setDeleteModalOpen(true);
-	const handleDeleteModalClose = () => setDeleteModalOpen(false);
-	const [pagination, setPagination] = React.useState({
+	const [totalProducts, setTotalProducts] = useState(0);
+	const [addModalOpen, setAddModalOpen] = useState(false);
+	const [editModalOpen, setEditModalOpen] = useState(false);
+	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+	const [pagination, setPagination] = useState({
 		currentPage: 1,
 		postsPerPage: 6,
 	});
-	const [category, setCategory] = React.useState({
+	const [category, setCategory] = useState({
 		category: 'لپتاپ'
 	});
-	const [refresh, setRefresh] = React.useState(false);
-	const [editedProduct, setEditedProduct] = React.useState({});
-	const [deletedProduct, setDeletedProduct] = React.useState({
+	const [refresh, setRefresh] = useState(false);
+	const [editedProduct, setEditedProduct] = useState({});
+	const [deletedProduct, setDeletedProduct] = useState({
 		id: 0,
 		name: '',
 	});
 	
-	const filtered_Products = useSelector((state) => state.allProducts.products);
-	const categories = useSelector((state) => state.allCategories.categories);
 	const dispatch = useDispatch();
+	const products = useSelector((state) => state.allProducts.products);
+	const categories = useSelector((state) => state.allCategories.categories);
 	
 	const paginate = pageNum => setPagination({...pagination, currentPage: pageNum});
 	const nextPage = () => setPagination({...pagination, currentPage: pagination.currentPage + 1});
 	const prevPage = () => setPagination({...pagination, currentPage: pagination.currentPage - 1});
 	
-	const handleCategory = (category) => {
-		setCategory({category});
+	const handleAddModalOpen = () => setAddModalOpen(true);
+	const handleAddModalClose = () => setAddModalOpen(false);
+	const handleEditModalOpen = () => setEditModalOpen(true);
+	const handleEditModalClose = () => setEditModalOpen(false);
+	const handleDeleteModalOpen = () => setDeleteModalOpen(true);
+	const handleDeleteModalClose = () => setDeleteModalOpen(false);
+	const handleCategory = (category) => setCategory({category});
+	const handleRefresh = () => setRefresh(!refresh);
+	const handleProductEdit = (product) => {
+		setEditedProduct(product);
+		handleEditModalOpen();
 	};
-	const handleRefresh = () => {setRefresh(!refresh);};
+	const handleProductDelete = (id, name) => {
+		setDeletedProduct({id, name});
+		handleDeleteModalOpen();
+	};
 	
 	useEffect(() => {
 		getFilteredProducts(pagination.currentPage, category.category).then((response) => {
-			productsCount = +response[1];
+			setTotalProducts(+response[1]);
 			dispatch(filteredProducts(response[0]));
 		});
 	}, [pagination.currentPage, category.category, refresh]);
@@ -68,38 +69,6 @@ const PanelProducts = () => {
 		});
 	}, []);
 	
-	const notify = (message, type) => {
-		if (type === 'success') {
-			toast.success(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		} else if (type === 'error') {
-			toast.error(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		}
-	};
-	
-	const handleProductEdit = (product) => {
-		setEditedProduct(product);
-		handleEditModalOpen();
-	};
-	const handleProductDelete = (id, name) => {
-		setDeletedProduct({...deletedProduct, id, name});
-		handleDeleteModalOpen();
-	};
 	
 	return (
 		<div className={style.wrapper}>
@@ -109,23 +78,22 @@ const PanelProducts = () => {
 				<button onClick={handleAddModalOpen}>افزودن کالا</button>
 			</div>
 			
-			<ProductsTable products={filtered_Products} changeCategory={handleCategory} categories={categories}
+			<ProductsTable products={products} changeCategory={handleCategory} categories={categories}
 			               openEditModal={handleProductEdit} openDeleteModal={handleProductDelete}/>
 			
-			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
+			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={totalProducts} paginate={paginate}
 			            nextPage={nextPage} prevPage={prevPage}/>
 			
 			{addModalOpen && <AddModal open={addModalOpen} close={handleAddModalClose} categories={categories}
-			                           refresh={handleRefresh} toast={notify}/>}
+			                           refresh={handleRefresh}/>}
 			
-			{editModalOpen && <EditModal targetProduct={editedProduct} open={editModalOpen} toast={notify}
+			{editModalOpen && <EditModal targetProduct={editedProduct} open={editModalOpen}
 			                             close={handleEditModalClose} refresh={handleRefresh}/>}
 			
-			{deleteModalOpen && <DeleteModal products={filtered_Products} targetProduct={deletedProduct}
+			{deleteModalOpen && <DeleteModal products={products} targetProduct={deletedProduct}
 			                                 open={deleteModalOpen} close={handleDeleteModalClose}
-			                                 refresh={handleRefresh} toast={notify} prevPage={prevPage}/>}
+			                                 refresh={handleRefresh} prevPage={prevPage}/>}
 			
-			<ToastContainer newestOnTop={true} rtl pauseOnFocusLoss />
 		</div>
 	);
 };

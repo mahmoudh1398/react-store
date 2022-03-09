@@ -78,7 +78,7 @@ const Products = () => {
 			
 			<Sidebar categories={categories} changeCategory={handleCategory}/>
 			
-			{filtered_Products.length > 0 ?
+			{!!filtered_Products.length ?
 				<Box sx={products_box}>
 					<div className={style.category_link}>{category.name}</div>
 					<Grid container spacing={{xs: 2, md: 3}} columns={{xs: 6, sm: 8, md: 12}} className={style.products}>

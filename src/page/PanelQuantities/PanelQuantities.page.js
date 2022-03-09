@@ -6,18 +6,17 @@ import {useEffect, useState} from "react";
 import {getProducts} from "api/products.api";
 import {setProducts} from "redux/action/productsAction";
 import {PriceCount} from "api/price-count.api";
-import {InputCount, InputPrice} from "components";
+import {CountInput, PriceInput} from "components";
 import Button from "@mui/material/Button";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
+import {notify} from "utils/notify";
 
 let productsCount;
-toast.configure();
 
 const PanelQuantities = () => {
 	
-	const [priceHasError, setPriceHasError] = useState(false);
-	const [countHasError, setCountHasError] = useState(false);
-	const products = useSelector((state) => state.allProducts.products);
+	const [hasError, setHasError] = useState(false);
+	const allProducts = useSelector((state) => state.allProducts.products);
 	const dispatch = useDispatch();
 	const [reRender, setReRender] = useState(false);
 	const [disable, setDisable] = React.useState(true);
@@ -26,30 +25,6 @@ const PanelQuantities = () => {
 		currentPage: 1,
 		postsPerPage: 6
 	});
-	
-	const notify = (message, type) => {
-		if (type === 'success') {
-			toast.success(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		} else if (type === 'error') {
-			toast.error(message, {
-				position: "bottom-left",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-		}
-	};
 	
 	useEffect(() => {
 		setCloseInput(false);
@@ -100,27 +75,22 @@ const PanelQuantities = () => {
 		price.forEach((item) => {
 			PriceCount(item.id, { price: item.price }).then((response) => {
 				if (response.status !== 200) {
-					setPriceHasError(true);
+					setHasError(true);
 				}
 			});
 		});
-		if (priceHasError === false) {
-			notify('ویرایش قیمت با موفقیت انجام شد', 'success');
-		} else {
-			notify('ویرایش قیمت با موفقیت انجام نشد', 'error');
-		}
 		
 		count.forEach((item) => {
 			PriceCount(item.id, { count: item.count }).then((response) => {
 				if (response.status !== 200) {
-					setCountHasError(true);
+					setHasError(true);
 				}
 			});
 		});
-		if (countHasError === false) {
-			notify('ویرایش موجودی با موفقیت انجام شد', 'success');
+		if (!hasError) {
+			notify('تغییرات با موفقیت ذخیره شد', 'success');
 		} else {
-			notify('ویرایش موجودی با موفقیت انجام نشد', 'error');
+			notify('تغییرات با موفقیت ذخیره نشد', 'error');
 		}
 		
 		setCloseInput(true);
@@ -153,18 +123,16 @@ const PanelQuantities = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{products.length > 0 ? products.map( (product) =>
+						{!!allProducts.length ? allProducts.map( (product) =>
 							<tr key={product.id}>
 								<td>{product.name}</td>
-								<InputCount
-									placeholder={product.count}
+								<CountInput
 									value={product.count}
 									name={product.id}
 									func={closeInput}
 									disableSubmitBtn={handleSubmitBtn}
 								/>
-								<InputPrice
-									placeholder={product.price}
+								<PriceInput
 									value={product.price}
 									name={product.id}
 									func={closeInput}
@@ -175,7 +143,6 @@ const PanelQuantities = () => {
 						}
 					</tbody>
 				</table>
-				{/*<QuantitiesTable quantities={products} reRender={handleRefresh}/>*/}
 			</form>
 			<Pagination postsPerPage={pagination.postsPerPage} totalPosts={productsCount} paginate={paginate}
 			            nextPage={nextPage}

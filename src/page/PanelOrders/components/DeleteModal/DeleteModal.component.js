@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,25 +6,28 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useTheme} from '@mui/material/styles';
-import http from "services/http.service";
 import Box from "@mui/material/Box";
+
+import http from "services/http.service";
+import {notify} from "utils/notify";
+
+import style from "./DeleteModal.module.scss";
 
 const modalStyle = {
 	width: 500,
 	display: 'flex',
 	flexDirection: 'column',
-	alignItems: 'center',
+	alignItems: 'flex-start',
 	justifyContent: 'center',
 	height: 200,
 };
 
-function DeleteModal({orders, targetOrder, open, close, refresh, toast, prevPage}) {
+function DeleteModal({orders, targetOrder, open, close, refresh, prevPage}) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 	
-	const handleClose = () => {
-		close();
-	};
+	const handleClose = () => close();
+	
 	
 	const handleDelete = () => {
 		try {
@@ -38,11 +40,11 @@ function DeleteModal({orders, targetOrder, open, close, refresh, toast, prevPage
 					}
 					refresh();
 					close();
-					toast('سفارش با موفقیت حذف شد', 'success');
+					notify('سفارش با موفقیت حذف شد', 'success');
 				});
 		} catch (e) {
 			console.log(e);
-			toast('خطا در حذف سفارش', 'error');
+			notify('خطا در حذف سفارش', 'error');
 		}
 	}
 	
@@ -55,19 +57,19 @@ function DeleteModal({orders, targetOrder, open, close, refresh, toast, prevPage
 				aria-labelledby="responsive-dialog-title"
 			>
 				<Box sx={modalStyle}>
-					<DialogTitle id="responsive-dialog-title">
-						آیا از حذف این سفارش مطمئن هستید؟
+					<DialogTitle id="responsive-dialog-title" className={style.heading}>
+						از حذف سفارش این شخص مطمئنی؟
 					</DialogTitle>
 					<DialogContent>
-						<DialogContentText>
+						<DialogContentText className={style.content}>
 							{targetOrder.name} {targetOrder.family}
 						</DialogContentText>
 					</DialogContent>
-					<DialogActions>
-						<Button autoFocus onClick={handleClose} sx={{color: 'red'}}>
+					<DialogActions className={style.actions}>
+						<Button autoFocus onClick={handleClose} className={style.cancelBtn}>
 							خیر
 						</Button>
-						<Button onClick={handleDelete} autoFocus sx={{color: 'green'}}>
+						<Button onClick={handleDelete} autoFocus className={style.submitBtn}>
 							بله
 						</Button>
 					</DialogActions>

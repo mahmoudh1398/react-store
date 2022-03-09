@@ -2,7 +2,7 @@
 // import * as React from "react";
 // import {PriceCount} from "api/price-count.api";
 // import {useState} from "react";
-// import {InputCount, InputPrice} from "components";
+// import {CountInput, PriceInput} from "components";
 //
 // const QuantitiesTable = ({quantities, refresh}) => {
 //
@@ -65,13 +65,13 @@
 // 				{quantities.map( product =>
 // 					<tr key={product.id}>
 // 						<td>{product.name}</td>
-// 						<InputPrice
+// 						<PriceInput
 // 							placeholder={product.price}
 // 							value={product.price}
 // 							name={product.id}
 // 							func={closeInput}
 // 						/>
-// 						<InputCount
+// 						<CountInput
 // 							placeholder={product.count}
 // 							value={product.count}
 // 							name={product.id}

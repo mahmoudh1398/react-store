@@ -140,6 +140,7 @@ const Checkout = () => {
 									onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.tel}
+									inputProps={{ maxLength: 11 }}
 								/>
 							</div>
 						</div>

@@ -1,19 +1,37 @@
-import * as React from 'react';
+import {useState} from "react";
 import { useSelector ,useDispatch} from 'react-redux'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-// import {deleteData} from 'api/panel.data.api';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+import style from './DeleteBtn.module.scss';
 
 
-const style = {
+const modalStyle = {
+	width: 500,
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'flex-start',
+	justifyContent: 'center',
+	height: 200,
+};
+
+const deleteModalStyle = {
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: '30%',
+	width: 500,
+	height: 200,
 	bgcolor: 'background.paper',
 	border: '.2px solid #000',
 	boxShadow: 1,
@@ -22,7 +40,10 @@ const style = {
 
 const DeleteBtn = ({personOrder, personOrders}) => {
 	
-	const [open, setOpen] = React.useState(false);
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+	
+	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 	const dispatch = useDispatch()
@@ -40,57 +61,33 @@ const DeleteBtn = ({personOrder, personOrders}) => {
 	
 	return (
 		<>
-			<Button size="large" onClick={handleOpen} style={{color: 'red', fontSize: '1rem'}}>حذف</Button>
-			<Modal
+			<Button size="large" onClick={handleOpen} className={style.deleteBtn}>حذف</Button>
+			<Dialog
+				fullScreen={fullScreen}
 				open={open}
 				onClose={handleClose}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
+				aria-labelledby="responsive-dialog-title"
 			>
-				<Box sx={style}>
-					<Typography
-						id="modal-modal-title"
-						variant="h6"
-						component="h2"
-						sx={{
-							mb:5 ,
-							display: 'flex',
-							justifyContent:'center'
-						}}
-					>از حذف محصول اطمینان دارید ؟
-					</Typography>
-					<Box  sx={{display: 'flex', flexWrap: 'wrap', justifyContent:'space-around' }}>
-						<Button
-							size="large"
-							variant="outlined"
-							color="error"
-							id={personOrder.id}
-							onClick={handelDelOrder}
-							startIcon={<DeleteIcon />}
-							sx={{
-								m:5,
-								width:'150px',
-								height:'42px',
-							}}
-						>بله
+				<Box sx={modalStyle}>
+					<DialogTitle id="responsive-dialog-title" className={style.heading}>
+						از حذف این کالا اطمینان دارید؟
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText className={style.content}>
+							{personOrder.name}
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions className={style.actions}>
+						<Button autoFocus onClick={handleClose} className={style.cancelBtn}>
+							خیر
 						</Button>
-						<Button
-							size="large"
-							variant="outlined"
-							color="success"
-							onClick={handleClose}
-							sx={{
-								m:5,
-								width:'150px',
-								height:'42px',
-							}}
-						>خیر
+						<Button onClick={handelDelOrder} autoFocus className={style.submitBtn} id={personOrder.id}>
+							بله
 						</Button>
-					</Box>
+					</DialogActions>
 				</Box>
-			</Modal>
+			</Dialog>
 		</>
-	
 	);
 }
 

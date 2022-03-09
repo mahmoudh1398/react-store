@@ -10,6 +10,7 @@ import {TextField} from "@mui/material";
 import {PATHS} from "config/routes.config";
 import {loginUser} from "api/login.api";
 import {ACCESS_TOKEN, ADMIN_FULL_NAME, IS_LOGGED_IN} from "config/variables.config";
+import {notify} from "utils/notify";
 
 
 const PanelLogin = () => {
@@ -58,6 +59,7 @@ const PanelLogin = () => {
 							localStorage.setItem(IS_LOGGED_IN, true.toString());
 							localStorage.setItem(ADMIN_FULL_NAME, res.name)
 							navigate(PATHS.PANEL_PRODUCTS);
+							notify(`${res.name} خوش آمدید`,'success')
 						});
 					}}
 				>

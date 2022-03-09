@@ -1,28 +1,33 @@
 import {useEffect, useState} from "react";
 
-const InputPrice = (props) => {
-  
-  const [value, setValue] = useState(false);
+const PriceInput = (props) => {
+   const [status, setStatus] = useState(false);
+   const [value, setValue] = useState( +props.value);
    
    useEffect(() => {
       if (props.func) {
-         setValue(false);
+         setStatus(false);
       }
    }, [props.func]);
+   
+   const handleChange = (e) => {
+      setValue(e.target.value);
+   };
   
   return (
     <td onClick={() => {
       props.disableSubmitBtn(false);
-      setValue(true);
+      setStatus(true);
     }}>
-      {value ? (
+      {status ? (
         <input
-          type="text"
+          type="number"
           name={`price_${props.name}`}
-          placeholder={props.placeholder}
+          value={value}
+          onChange={handleChange}
           onKeyDown={(e) => {if(e.which === 27){
              props.disableSubmitBtn(true);
-             setValue(false);
+             setStatus(false);
           }}}
         />
       ) : (
@@ -32,4 +37,4 @@ const InputPrice = (props) => {
   );
 };
 
-export { InputPrice };
+export { PriceInput };

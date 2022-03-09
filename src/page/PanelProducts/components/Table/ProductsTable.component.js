@@ -35,7 +35,7 @@ const ProductsTable = ({products, changeCategory, categories, openEditModal, ope
 			</tr>
 			</thead>
 			<tbody>
-			{products.length > 0 ? products.map( product => (
+			{!!products.length ? products.map( product => (
 					<tr key={product.id}>
 						<td><img className={style.image} src={`${BASE_URL}/files/${product.thumbnail}`} alt={product.name}/></td>
 						<td>{product.name}</td>

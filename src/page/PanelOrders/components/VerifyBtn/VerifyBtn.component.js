@@ -19,6 +19,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TableContainer from "@mui/material/TableContainer";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
+import {notify} from "utils/notify";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -50,7 +51,7 @@ const style = {
 	p: 4,
 };
 
-const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh}) => {
+const VerifyBtn = ({orders, targetOrder, prevPage, open, close, refresh}) => {
 	
 	const handleEdit =  (e) => {
 		e.preventDefault();
@@ -68,10 +69,10 @@ const VerifyBtn = ({orders, targetOrder, toast, prevPage, open, close, refresh})
 					}
 					close();
 					refresh();
-					toast('سفارش با موفقیت ویرایش شد', 'success');
+					notify('سفارش با موفقیت ویرایش شد', 'success');
 				})
 		} catch (e) {
-			toast('خطا در ویرایش سفارش', 'error');
+			notify('خطا در ویرایش سفارش', 'error');
 			return Promise.reject(e)
 		}
 	}
