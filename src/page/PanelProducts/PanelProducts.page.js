@@ -45,9 +45,9 @@ const PanelProducts = () => {
 	const handleEditModalClose = () => setEditModalOpen(false);
 	const handleDeleteModalOpen = () => setDeleteModalOpen(true);
 	const handleDeleteModalClose = () => setDeleteModalOpen(false);
-	const handleCategory = (category) => setCategory({category});
+	const handleCategory = category => setCategory({category});
 	const handleRefresh = () => setRefresh(!refresh);
-	const handleProductEdit = (product) => {
+	const handleProductEdit = product => {
 		setEditedProduct(product);
 		handleEditModalOpen();
 	};

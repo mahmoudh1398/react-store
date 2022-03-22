@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import style from './PriceInput.module.scss';
 
 const PriceInput = (props) => {
    const [status, setStatus] = useState(false);
@@ -15,13 +16,14 @@ const PriceInput = (props) => {
    };
   
   return (
-    <td onClick={() => {
+    <td className={style.input} onClick={() => {
       props.disableSubmitBtn(false);
       setStatus(true);
     }}>
       {status ? (
         <input
           type="number"
+          min={0}
           name={`price_${props.name}`}
           value={value}
           onChange={handleChange}

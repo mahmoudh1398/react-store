@@ -1,15 +1,17 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {postOrder} from "api/orders.api";
 import style from './PaymentResult.module.scss';
 import fail from "asset/images/cancel.svg";
 import ok from "asset/images/ok.svg";
+import {PATHS} from "config/routes.config";
 
 const PaymentResult = () => {
 	
+	const navigate = useNavigate();
 	let { result } = useParams();
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const [error, setError] = useState(false);
 	let basketStatusUpdate = useSelector(state => state.basketStatusUpdate.basketStatusUpdate)
 	
@@ -40,6 +42,7 @@ const PaymentResult = () => {
 					 <img src={fail} alt="fail" />
 				 </figure>
 				 <p>پرداخت موفقیت آمیز نبود، سفارش شما در انتظار پرداخت است.</p>
+				 <button onClick={() => navigate(PATHS.BASKET)}>بازگشت به سبد خرید</button>
 			 </div>
 			 :
 			 <div className={style.result}>
@@ -47,6 +50,7 @@ const PaymentResult = () => {
 					 <img src={ok} alt="success" />
 				 </figure>
 				 <p>با تشکر از پرداخت شما، سفارش شما با موفقیت ثبت شد.</p>
+				 <button onClick={() => navigate(PATHS.HOME)}>بازگشت به سایت</button>
 			 </div>
 		 }
 	 </div>

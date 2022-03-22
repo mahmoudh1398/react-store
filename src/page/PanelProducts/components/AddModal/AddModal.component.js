@@ -1,8 +1,7 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,6 +14,10 @@ import http from "services/http.service";
 import {notify} from "utils/notify";
 
 import style from "./AddModal.module.scss";
+import Badge from "@mui/material/Badge";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import {IMAGE_URL} from "../../../../config/variables.config";
+import * as React from "react";
 
 
 const addModalStyle = {
@@ -46,6 +49,12 @@ const initialValues = {
 
 function AddModal({open, close, categories, refresh}) {
 	
+	const imageInput = useRef();
+	const thumbnailInput = useRef();
+	const [selectedImage, setSelectedImage] = useState();
+	const [selectedThumbnail, setSelectedThumbnail] = useState();
+	const [previewImage, setPreviewImage] = useState();
+	const [previewThumbnail, setPreviewThumbnail] = useState();
 	const [uploadedImages, setUploadedImages] = useState([]);
 	const [thumbnail , setThumbnail] = useState('');
 	const [category, setCategory] = useState({
@@ -54,7 +63,37 @@ function AddModal({open, close, categories, refresh}) {
 	});
 	const [description, setDescription] = useState('');
 	
+	useEffect(() => {
+		if (!selectedImage) {
+			setPreviewImage(undefined);
+			return;
+		}
+		const objectUrl = URL.createObjectURL(selectedImage);
+		setPreviewImage(objectUrl);
+		
+		// free memory when ever this component is unmounted
+		return () => URL.revokeObjectURL(objectUrl);
+	}, [selectedImage]);
+	
+	useEffect(() => {
+		if (!selectedThumbnail) {
+			setPreviewThumbnail(undefined);
+			return;
+		}
+		const objectUrl = URL.createObjectURL(selectedThumbnail);
+		setPreviewThumbnail(objectUrl);
+		
+		// free memory when ever this component is unmounted
+		return () => URL.revokeObjectURL(objectUrl);
+	}, [selectedThumbnail]);
+	
 	const handleImagesSelect = (event) => {
+		
+		if (!event.target.files || event.target.files.length === 0) {
+			setSelectedImage(undefined);
+			return;
+		}
+		
 		if (event.target.files[0]) {
 			const image = event.target.files[0];
 			if (image.type !== 'image/jpeg') {
@@ -67,8 +106,14 @@ function AddModal({open, close, categories, refresh}) {
 				event.target.value = '';
 				return;
 			}
+			setSelectedImage(event.target.files[0]);
 			initialValues.image = Array.from(event.target.files);
 		}
+	};
+	
+	const deleteSelectedImage = () => {
+		setSelectedImage(undefined);
+		imageInput.current.value = '';
 	};
 	
 	const handleImagesUpload = () => {
@@ -95,6 +140,12 @@ function AddModal({open, close, categories, refresh}) {
 	};
 	
 	const handleThumbnailSelect = (event) => {
+		
+		if (!event.target.files || event.target.files.length === 0) {
+			setSelectedThumbnail(undefined);
+			return;
+		}
+		
 		if (event.target.files[0]) {
 			const thumbnail = event.target.files[0];
 			if (thumbnail.type !== 'image/jpeg') {
@@ -107,8 +158,14 @@ function AddModal({open, close, categories, refresh}) {
 				event.target.value = '';
 				return;
 			}
+			setSelectedThumbnail(event.target.files[0])
 			initialValues.thumbnail = Array.from(event.target.files);
 		}
+	};
+	
+	const deleteSelectedThumbnail = () => {
+		setSelectedThumbnail(undefined);
+		thumbnailInput.current.value = '';
 	};
 	
 	const handleThumbnailUpload = () => {
@@ -225,7 +282,24 @@ function AddModal({open, close, categories, refresh}) {
 											id="image"
 											onChange={handleImagesSelect}
 											accept="image/jpeg"
+											ref={imageInput}
 										/>
+										{selectedImage &&
+											<Badge color="error" anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'right',
+											}}>
+												<HighlightOffIcon
+													onClick={deleteSelectedImage}
+													color="error"
+													sx={{
+														fontSize: 20,
+														cursor: 'pointer'
+													}}
+												/>
+												<img src={previewImage} alt="" className={style.selected_image} />
+											</Badge>
+										}
 										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleImagesUpload}>
 											آپلود تصاویر
 										</Button>
@@ -239,7 +313,24 @@ function AddModal({open, close, categories, refresh}) {
 											id="thumbnail"
 											onChange={handleThumbnailSelect}
 											accept="image/jpeg"
+											ref={thumbnailInput}
 										/>
+										{selectedThumbnail &&
+											<Badge color="error" anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'right',
+											}}>
+												<HighlightOffIcon
+													onClick={deleteSelectedThumbnail}
+													color="error"
+													sx={{
+														fontSize: 20,
+														cursor: 'pointer'
+													}}
+												/>
+												<img src={previewThumbnail} alt="" className={style.selected_image} />
+											</Badge>
+										}
 										<Button variant="contained" sx={{mt: 1, backgroundColor: '#004D40', ":hover" :{backgroundColor: '#00695C'}}} component="span" onClick={handleThumbnailUpload}>
 											آپلود تصویر
 										</Button>

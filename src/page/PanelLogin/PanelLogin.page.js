@@ -108,7 +108,7 @@ const PanelLogin = () => {
 									type="submit"
 									fullWidth
 									variant="contained"
-									sx={{ mt: 3, mb: 2, backgroundColor: '#004D40', ":hover": {backgroundColor: '#00796B'}}}
+									sx={{ mt: 3, mb: 2, height: '50px', fontSize: '14px', backgroundColor: '#004D40', ":hover": {backgroundColor: '#00796B'}}}
 									disabled={Boolean(!isValid)}
 								>
 									ورود

@@ -27,7 +27,7 @@ const ProductsList = ({ category }) => {
 		<>
 			{products.length > 0 &&
 					<Box sx={products_box} key={category.id}>
-						<Link to={`/products?page=1&category=${category.id}`} className={style.myLink}>
+						<Link to={`/products?page=1&category=${category.name}`} className={style.myLink}>
 							<div className={style.category_link}>{category.name}</div>
 						</Link>
 						<Grid container spacing={{xs: 2, md: 3}} columns={{xs: 4, sm: 8, md: 12}} className={style.products}>

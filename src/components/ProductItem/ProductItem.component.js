@@ -26,7 +26,7 @@ const ProductItem = ({productItem}) => {
 				<CardMedia
 					component="img"
 					height="150"
-					image={`${IMAGE_URL}${productItem ? productItem.image[0] : ''}`}
+					image={`${IMAGE_URL}${productItem ? productItem.thumbnail : ''}`}
 					alt={productItem.name}
 					className={style.card_image}
 				/>
@@ -34,7 +34,7 @@ const ProductItem = ({productItem}) => {
 					<Typography
 						variant="h5"
 						color="text.secondary"
-						sx={{ fontFamily : 'iransans', fontSize : '1.4rem','&:hover': {color: "#7FD3B0"} }}
+						sx={{ fontFamily : 'Vazirmatn-FD-Regular', fontSize : '1.4rem','&:hover': {color: "#7FD3B0"} }}
 						className={style.card_title}
 					>
 						{productItem ? productItem.name : ''}
@@ -60,7 +60,7 @@ const ProductItem = ({productItem}) => {
 							display: 'flex' ,
 							justifyContent: 'flex-end',
 							pr: 2 ,
-							fontFamily : 'iransans',
+							fontFamily : 'Vazirmatn-FD-Regular',
 							fontSize : '1.4rem',
 							'&:hover': {
 								color: "#7FD3B0",

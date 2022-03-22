@@ -1,6 +1,15 @@
 .product_modal {
   text-align: center;
 
+  .selected_image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+
   div {
     display: flex;
     flex-direction: column;

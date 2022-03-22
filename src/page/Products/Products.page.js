@@ -28,7 +28,7 @@ const Products = () => {
 	
 	const [searchParams, setSearchParams] = useSearchParams(1);
 	const search = useLocation().search;
-	const categoryId = +new URLSearchParams(search).get('category');
+	const categoryName = new URLSearchParams(search).get('category');
 	const [pagination, setPagination] = useState({
 		currentPage: 1,
 		postsPerPage: 6,
@@ -56,7 +56,7 @@ const Products = () => {
 			productsCount = +response[1];
 			dispatch(filteredProducts(response[0]));
 		});
-		setSearchParams({ page: pagination.currentPage, category: category.id });
+		setSearchParams({ page: pagination.currentPage, category: category.name });
 	}, [pagination.currentPage, category.name]);
 	
 	useEffect(() => {
@@ -66,8 +66,8 @@ const Products = () => {
 	}, []);
 	
 	useEffect(() => {
-		if (categoryId) {
-			const category = categories.find(c => c.id === categoryId);
+		if (categoryName) {
+			const category = categories.find(c => c.name === categoryName);
 			setCategory({...category});
 		}
 	}, []);

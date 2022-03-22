@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import style from './CountInput.module.scss';
 
 const CountInput = (props) => {
   
@@ -16,13 +17,14 @@ const CountInput = (props) => {
   };
   
   return (
-    <td onClick={() => {
+    <td className={style.input} onClick={() => {
       props.disableSubmitBtn(false);
       setStatus(true);
     }}>
       {status ? (
         <input
           type="number"
+          min={0}
           name={`count_${props.name}`}
           value={value}
           onChange={handleChange}

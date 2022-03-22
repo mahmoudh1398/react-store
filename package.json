@@ -24,6 +24,7 @@
     "formik": "^2.2.9",
     "history": "^5.3.0",
     "jalali-moment": "^3.3.11",
+    "lottie-web": "^5.9.1",
     "moment": "^2.29.1",
     "moment-jalaali": "^0.9.4",
     "prop-types": "^15.8.1",

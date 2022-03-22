@@ -50,12 +50,13 @@ const DeleteBtn = ({personOrder, personOrders}) => {
 	let basketStatusUpdate = useSelector(state => state.basketStatusUpdate.basketStatusUpdate)
 	
 	
-	const handelDelOrder= ({target}) => {
+	const handelDeleteOrder= ({target}) => {
 		const id = +target.id
 		const newOrders= personOrders.filter(item => item.id !== id)
 		localStorage.setItem( 'PERSON_ORDERS' , JSON.stringify(newOrders))
 		dispatch({type: 'RE_RENDER_STATUS', payload: !basketStatusUpdate})
-		handleClose()
+		handleClose();
+		// lottieShow();
 	}
 	
 	
@@ -81,7 +82,7 @@ const DeleteBtn = ({personOrder, personOrders}) => {
 						<Button autoFocus onClick={handleClose} className={style.cancelBtn}>
 							خیر
 						</Button>
-						<Button onClick={handelDelOrder} autoFocus className={style.submitBtn} id={personOrder.id}>
+						<Button onClick={handelDeleteOrder} autoFocus className={style.submitBtn} id={personOrder.id}>
 							بله
 						</Button>
 					</DialogActions>

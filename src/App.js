@@ -13,7 +13,7 @@ const cacheRtl = createCache({
 
 let theme = createTheme({
    typography: {
-      fontFamily: 'iransans',
+      fontFamily: 'Vazirmatn-FD-Regular',
    },
    direction: 'rtl'
 });
