@@ -37,21 +37,25 @@ const PaymentResult = () => {
 	 <div className={style.wrapper}>
 		 <h2>نتیجه پرداخت</h2>
 		 {error ?
-			 <div className={style.result}>
-				 <figure>
-					 <img src={fail} alt="fail" />
-				 </figure>
-				 <p>پرداخت موفقیت آمیز نبود، سفارش شما در انتظار پرداخت است.</p>
+			 <>
+				 <div className={style.result}>
+					 <figure>
+						 <img src={fail} alt="fail" />
+					 </figure>
+					 <p>پرداخت موفقیت آمیز نبود، سفارش شما در انتظار پرداخت است.</p>
+				 </div>
 				 <button onClick={() => navigate(PATHS.BASKET)}>بازگشت به سبد خرید</button>
-			 </div>
+			 </>
 			 :
-			 <div className={style.result}>
-				 <figure>
-					 <img src={ok} alt="success" />
-				 </figure>
-				 <p>با تشکر از پرداخت شما، سفارش شما با موفقیت ثبت شد.</p>
+			 <>
+				 <div className={style.result}>
+					 <figure>
+						 <img src={ok} alt="success" />
+					 </figure>
+					 <p>با تشکر از پرداخت شما، سفارش شما با موفقیت ثبت شد.</p>
+				 </div>
 				 <button onClick={() => navigate(PATHS.HOME)}>بازگشت به سایت</button>
-			 </div>
+			 </>
 		 }
 	 </div>
   );

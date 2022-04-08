@@ -79,7 +79,7 @@ const PanelQuantities = () => {
 				}
 			});
 		});
-		
+
 		count.forEach((item) => {
 			PriceCount(item.id, { count: item.count }).then((response) => {
 				if (response.status !== 200) {
@@ -97,6 +97,7 @@ const PanelQuantities = () => {
 		handleSubmitBtn(true);
 		setReRender(!reRender);
 	};
+	
 	const handleSubmitBtn = (className) => {
 		if (className === false) {
 			setDisable(false);
